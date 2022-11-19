@@ -1,34 +1,47 @@
 package com.example.app.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.lang.String;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private int book_id;
+    @Size(max = 128)
     private String title;
+    @Size(max = 256)
+    private String authors;
+    @Size(max = 128)
     private String category;
-    private String price;
+    @Column(precision = 8, scale = 2)
+    private BigDecimal price;
     private LocalDate book_date;
+    @Size(max = 1024)
     private String description;
+    @Size(max = 256)
     private String keywords;
+    @Size(max = 256)
     private String notes;
-    private Integer recomendation;
+    private int recomendation;
 
     public Book() {
 
     }
 
-    public Book(String title, String category, String price, LocalDate book_date, String description,
-            String keywords, String notes, Integer recomendation) {
+    public Book(String title, String authors, String category, BigDecimal price, LocalDate book_date, String description, String keywords, String notes, int recomendation) {
         this.title = title;
+        this.authors = authors;
         this.category = category;
         this.price = price;
         this.book_date = book_date;
@@ -38,8 +51,8 @@ public class Book {
         this.recomendation = recomendation;
     }
 
-    public int getId() {
-        return this.id;
+    public int getBook_id() {
+        return this.book_id;
     }
 
     public String getTitle() {
@@ -50,6 +63,14 @@ public class Book {
         this.title = title;
     }
 
+    public String getAuthors() {
+        return this.authors;
+    }
+
+    public void setAuthors(String authors) {
+        this.authors = authors;
+    }
+
     public String getCategory() {
         return this.category;
     }
@@ -58,11 +79,11 @@ public class Book {
         this.category = category;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return this.price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -98,12 +119,13 @@ public class Book {
         this.notes = notes;
     }
 
-    public Integer getRecomendation() {
+    public int getRecomendation() {
         return this.recomendation;
     }
 
-    public void setRecomendation(Integer recomendation) {
+    public void setRecomendation(int recomendation) {
         this.recomendation = recomendation;
     }
+    
 
 }

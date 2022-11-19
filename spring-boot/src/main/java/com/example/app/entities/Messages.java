@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class Messages {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private int messages_id;
     @Size(max = 16)
     private String author;
     @NotNull
@@ -32,8 +32,8 @@ public class Messages {
         this.message = message;
     }
 
-    public int getId() {
-        return id;
+    public int getMessages_id() {
+        return messages_id;
     }
 
     public String getAuthor() {
