@@ -41,7 +41,7 @@
             <br>
 
 
-            <form action="/part1_vulnerable">
+            <form th:action="@{/part1_1_vulnerable_post}" th:object="${formlogin}" method="post">
                 <table  border="1" cellpadding="1" style="width: 300px; background-color:#f1f1f1">
                     <thead>
                         <tr>
@@ -51,23 +51,27 @@
                     <tbody>
                         <tr>
                             <td><label>Username</label></td>
-                            <td><input type="text" placeholder="Enter Username" name="v_username" required></td>
+                            <td><input type="text" placeholder="Enter Username" name="v_username" th:field="*{username}" required></td>
                         </tr>
                         <tr>
                             <td><label>Password</label> </td>
-                            <td><input type="password" placeholder="Enter Password" name="v_password" required> </td>
+                            <td><input type="password" placeholder="Enter Password" name="v_password" th:field="*{password}" required> </td>
                         </tr>
                         <tr>
                             <td><label>Remember me</label></td>
-                            <td><input  type="checkbox" checked="checked" name="v_remember"></td>
+                            <td><input  type="checkbox" checked="checked" name="v_remember" th:field="*{remember}"></td>
                         </tr>
                         <tr>
                             <td align="right" colspan="2"><button type="submit">Login</button></td>
                         </tr>
                     </tbody>
                 </table>
-            </form> 
-
+            </form>
+            <br> 
+            <div style="color:red">
+                
+                [(${error})]
+            </div>
         </div>
     </body>
 </html>

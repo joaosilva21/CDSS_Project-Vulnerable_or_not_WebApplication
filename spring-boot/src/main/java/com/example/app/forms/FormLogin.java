@@ -1,9 +1,9 @@
 package com.example.app.forms;
-import com.example.entities.Users;
 
 public class FormLogin {
     private String username;
     private String password;
+    private Boolean remember;
 
     public FormLogin(){
         
@@ -23,6 +23,14 @@ public class FormLogin {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getRemember() {
+        return remember;
+    }
+
+    public void setRemember(Boolean remember) {
+        this.remember = remember;
     }
 
     
