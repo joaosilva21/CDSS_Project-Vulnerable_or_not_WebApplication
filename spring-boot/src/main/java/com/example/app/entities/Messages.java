@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Messages {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int messages_id;
     @Size(max = 16)
     private String author;
@@ -35,6 +35,10 @@ public class Messages {
     public int getMessages_id() {
         return messages_id;
     }
+    
+    public void setMessages_id(int messages_id) {
+        this.messages_id = messages_id;
+    };
 
     public String getAuthor() {
         return author;
@@ -50,6 +54,7 @@ public class Messages {
 
     public void setMessage(String message) {
         this.message = message;
-    };
+    }
+
 
 }

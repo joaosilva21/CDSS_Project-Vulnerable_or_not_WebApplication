@@ -37,8 +37,8 @@ public class Part1_1_Controller {
     BookService bookService;
 
     @GetMapping("/part1_1_vulnerable")
-    public String part1_1_vuln(@CookieValue(name = "cookie", required = false)String cookie, @RequestParam(name = "error", required = false) String error, Model model) {
-        if(cookie != null){
+    public String part1_1_vuln(@CookieValue(name = "user", required = false)String user, @RequestParam(name = "error", required = false) String error, Model model) {
+        if(user != null){
             return "redirect:/index";
         }
   
@@ -51,18 +51,18 @@ public class Part1_1_Controller {
     }
 
     @PostMapping("/part1_1_vulnerable_post")
-    public String part1_1_vulnerable_post(@ModelAttribute FormLogin formLogin, HttpServletResponse response){
-        int error;
+    public String part1_1_vuln_post(@ModelAttribute FormLogin formLogin, HttpServletResponse response){
         List<Users> users = usersService.vulnerable_authentication(formLogin);
-        System.out.println(users.toString().substring(1, users.toString().length()-1));
+        
         if (users.size() == 0){
             return "redirect:/part1_1_vulnerable?error=invalid credentials";
-  
-        }else{
-            Cookie cookie = new Cookie("cookie", users.get(0).getUsername());
+        }
+        else{
+            Cookie cookie = new Cookie("user", users.get(0).getUsername());
             if (formLogin.getRemember()){
                 cookie.setMaxAge(60*60);
-            }else{
+            }
+            else{
                 cookie.setMaxAge(60);
             }
             response.addCookie(cookie);
