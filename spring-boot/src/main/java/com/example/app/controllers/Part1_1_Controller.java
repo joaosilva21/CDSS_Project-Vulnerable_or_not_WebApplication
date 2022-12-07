@@ -91,6 +91,7 @@ public class Part1_1_Controller {
 
         Cookie error = new Cookie("error", "1");
         error.setSecure(true);
+        error.setMaxAge(1);
         response.addCookie(error);
 
         return "redirect:/part1_1_non_vulnerable";
