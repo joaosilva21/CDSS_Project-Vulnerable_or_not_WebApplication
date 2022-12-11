@@ -28,8 +28,8 @@ public class MessagesService {
     }
 
     public List<Messages> getAllMessages(){
-        String sql_login = "SELECT * FROM messages";
-        Query query = em.createNativeQuery(sql_login);
+        String sql_message = "SELECT * FROM messages";
+        Query query = em.createNativeQuery(sql_message);
         List<Object[]> o = query.getResultList();
         List<Messages> messages = new ArrayList();
         for(Object[] obj : o){
