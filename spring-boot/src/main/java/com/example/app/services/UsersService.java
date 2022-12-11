@@ -1,5 +1,6 @@
 package com.example.app.services;
 
+import java.security.PrivateKey;
 import java.util.*;
 
 import javax.transaction.Transactional;
@@ -20,10 +21,10 @@ public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
-    public Boolean part1_1_non_vuln(FormLogin formlogin, SecretKey key){
+    public Boolean part1_1_non_vuln(FormLogin formlogin, PrivateKey private_key){
         try {
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, key);
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.DECRYPT_MODE, private_key);
             formlogin.setUsername(new String(cipher.doFinal(Base64.getDecoder().decode(formlogin.getUsername()))));
             formlogin.setPassword(new String(cipher.doFinal(Base64.getDecoder().decode(formlogin.getPassword()))));
         } 

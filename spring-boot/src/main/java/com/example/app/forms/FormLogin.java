@@ -1,5 +1,4 @@
 package com.example.app.forms;
-import com.example.app.entities.Users;
 
 public class FormLogin {
     private String username;

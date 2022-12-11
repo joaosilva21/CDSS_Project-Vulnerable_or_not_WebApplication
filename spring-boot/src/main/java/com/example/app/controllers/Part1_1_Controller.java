@@ -1,10 +1,14 @@
 package com.example.app.controllers;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.*;
 
 import com.example.app.entities.*;
 import com.example.app.services.*;
-import com.example.app.forms.*;
+import com.example.app.forms.FormLogin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-
 
 @Controller
 public class Part1_1_Controller {
@@ -35,7 +35,8 @@ public class Part1_1_Controller {
     @Autowired
     BookService bookService;
 
-    private SecretKey key;
+    private PublicKey public_key;
+    private PrivateKey private_key;
 
     @GetMapping("/part1_1_vulnerable")
     public String part1_1_vuln() {
@@ -52,25 +53,26 @@ public class Part1_1_Controller {
         if(error != null && error.compareTo("1") == 0){
             model.addAttribute("error", 1);
         }
-        
+
         try {
-            KeyGenerator kg = KeyGenerator.getInstance("AES");
-            kg.init(192); 
-            this.key = kg.generateKey();
-            
-        } catch (Exception e) {
+            KeyPairGenerator kgrsa = KeyPairGenerator.getInstance("RSA");
+            kgrsa.initialize(1024);
+            KeyPair pair = kgrsa.generateKeyPair();
+            this.private_key = pair.getPrivate();
+            this.public_key = pair.getPublic();
+        }catch(Exception e){
             System.out.println(e);
         }
 
         model.addAttribute("formlogin", new FormLogin());
-        model.addAttribute("mykey", new String(Base64.getEncoder().encodeToString(this.key.getEncoded())));
+        model.addAttribute("mykey", new String(Base64.getEncoder().encodeToString(this.public_key.getEncoded())));
        
         return "part1_1_non_vulnerable";
     }
 
     @PostMapping("/part1_1_non_vulnerable_post")
     public String part1_1_non_vuln_post(@ModelAttribute FormLogin formlogin, RedirectAttributes model, HttpServletResponse response){
-        if(usersService.part1_1_non_vuln(formlogin, this.key)){
+        if(usersService.part1_1_non_vuln(formlogin, this.private_key)){
             Cookie error = new Cookie("error", "0");        
             Cookie user = new Cookie("user", formlogin.getUsername());
             error.setSecure(true);

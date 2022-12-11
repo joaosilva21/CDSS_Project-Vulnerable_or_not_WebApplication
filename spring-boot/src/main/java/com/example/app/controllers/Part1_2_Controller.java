@@ -1,5 +1,9 @@
 package com.example.app.controllers;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.*;
 
 import com.example.app.entities.Messages;
@@ -15,10 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-
 @Controller
 public class Part1_2_Controller {
     @Autowired
@@ -30,7 +30,8 @@ public class Part1_2_Controller {
     @Autowired
     BookService bookService;
 
-    private SecretKey key;
+    private PublicKey public_key;
+    private PrivateKey private_key;
 
     @GetMapping("/part1_2_vulnerable")
     public String part1_2_vuln() {
@@ -48,15 +49,16 @@ public class Part1_2_Controller {
         model.addAttribute("listMessages", this.messagesService.findMessages() );
 
         try {
-            KeyGenerator kg = KeyGenerator.getInstance("AES");
-            kg.init(192); 
-            this.key = kg.generateKey();
-            
-        } catch (Exception e) {
+            KeyPairGenerator kgrsa = KeyPairGenerator.getInstance("RSA");
+            kgrsa.initialize(1024);
+            KeyPair pair = kgrsa.generateKeyPair();
+            this.private_key = pair.getPrivate();
+            this.public_key = pair.getPublic();
+        }catch(Exception e){
             System.out.println(e);
         }
 
-        model.addAttribute("mykey", new String(Base64.getEncoder().encodeToString(this.key.getEncoded())));
+        model.addAttribute("mykey", new String(Base64.getEncoder().encodeToString(this.public_key.getEncoded())));
 
         return "part1_2_non_vulnerable";
     }
@@ -64,7 +66,7 @@ public class Part1_2_Controller {
     @PostMapping("/part1_2_non_vulnerable_post")
     public String part1_2_non_vuln_post(@CookieValue(name = "user", required = false)String user, @ModelAttribute Messages message){
         message.setAuthor(user);
-        this.messagesService.insertMessage(message, this.key);
+        this.messagesService.insertMessage(message, this.private_key);
         
         return "redirect:index";
     }
