@@ -55,7 +55,7 @@ public class Part1_1_Controller {
         List<Users> users = usersService.vulnerable_authentication(formLogin);
         
         if (users.size() == 0){
-            return "redirect:/part1_1_vulnerable?error=invalid credentials";
+            return "redirect:/part1_1_vulnerable?error=Invalid credentials";
         }
         else{
             Cookie cookie = new Cookie("user", users.get(0).getUsername());
