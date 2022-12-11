@@ -134,10 +134,6 @@ public class BookService {
              (String)obj[4], (String)obj[5],(String)obj[6], (Integer)obj[8]));
         }
 
-        for(Book b : books){
-            System.out.println(b.getTitle());
-        }
-
         return books;
     }
 }
