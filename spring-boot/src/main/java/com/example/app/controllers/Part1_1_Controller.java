@@ -1,7 +1,10 @@
 package com.example.app.controllers;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.*;
@@ -51,7 +54,7 @@ public class Part1_1_Controller {
         }
         
         if(error != null && error.compareTo("1") == 0){
-            model.addAttribute("error", 1);
+            model.addAttribute("error", error);
         }
 
         try {
@@ -71,7 +74,7 @@ public class Part1_1_Controller {
     }
 
     @PostMapping("/part1_1_non_vulnerable_post")
-    public String part1_1_non_vuln_post(@ModelAttribute FormLogin formlogin, RedirectAttributes model, HttpServletResponse response){
+    public String part1_1_non_vuln_post(@ModelAttribute FormLogin formlogin, RedirectAttributes model, HttpServletResponse response) throws InvalidKeyException, IllegalArgumentException, NoSuchAlgorithmException, IOException{
         if(usersService.part1_1_non_vuln(formlogin, this.private_key)){
             Cookie error = new Cookie("error", "0");        
             Cookie user = new Cookie("user", formlogin.getUsername());

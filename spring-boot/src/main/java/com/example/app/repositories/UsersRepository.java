@@ -16,4 +16,6 @@ public interface UsersRepository extends CrudRepository<Users, Integer> {
     @Query("select u from Users u where u.username like %?1")
     public Users findUserByUsername(String username);
 
+    @Query("select u.qrcode from Users u where u.username like %?1")
+    public String findQRCodeByUsername(String username);
 }
