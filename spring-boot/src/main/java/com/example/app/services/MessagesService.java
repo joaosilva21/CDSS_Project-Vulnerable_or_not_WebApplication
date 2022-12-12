@@ -1,17 +1,20 @@
 package com.example.app.services;
 
-import java.security.PrivateKey;
-import java.util.*;
-
-import javax.transaction.Transactional;
-import javax.persistence.Query;
-import javax.persistence.EntityManager;
+import com.example.app.repositories.MessagesRepository;
+import com.example.app.entities.Messages;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.app.entities.Messages;
-import com.example.app.repositories.MessagesRepository;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+
+import javax.persistence.Query;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
+import java.security.PrivateKey;
 
 import javax.crypto.Cipher;
 
@@ -25,7 +28,7 @@ public class MessagesService {
     private EntityManager em;
 	
 	@Transactional
-    public void insertMessage_vuln(Messages message){
+    public void part1_2_vuln(Messages message){
         String sql_insert_message = "INSERT INTO messages (author, message) VALUES('" + message.getAuthor() + "', '" + message.getMessage() + "')"; 
         Query query = em.createNativeQuery(sql_insert_message);
         query.executeUpdate();
@@ -35,7 +38,7 @@ public class MessagesService {
         String sql_message = "SELECT * FROM messages";
         Query query = em.createNativeQuery(sql_message);
         List<Object[]> o = query.getResultList();
-        List<Messages> messages = new ArrayList();
+        List<Messages> messages = new ArrayList<>();
         for(Object[] obj : o){
             messages.add(new Messages((String)obj[1], (String)obj[2]));
         }
@@ -43,7 +46,7 @@ public class MessagesService {
         return messages;
     }
 
-    public void insertMessage_non_vuln(Messages message, PrivateKey private_key){
+    public void part1_2_non_vuln(Messages message, PrivateKey private_key){
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, private_key);

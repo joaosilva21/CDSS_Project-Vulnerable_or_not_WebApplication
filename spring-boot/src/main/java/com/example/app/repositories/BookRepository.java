@@ -1,13 +1,13 @@
 package com.example.app.repositories;
 
+import com.example.app.entities.Book;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
-import com.example.app.entities.Book;
 
 import java.util.List;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -40,7 +40,7 @@ public interface BookRepository extends CrudRepository<Book, Integer>{
            "        (b.notes LIKE concat('%', ?11, '%') and True = ?16) and 'phrase' = ?17) or True = ?18) and" +
            "       (b.book_date <= ?19) and" +
            "       (b.book_date >= ?20 or True = ?21)")
-    public List<Book> searchBooks(String title, Boolean t_use,
+    public List<Book> searchBooks_non_vuln(String title, Boolean t_use,
                                 String authors, Boolean a_use,
                                 String category, Boolean c_use,
                                 BigDecimal price_less, Boolean pl_use,

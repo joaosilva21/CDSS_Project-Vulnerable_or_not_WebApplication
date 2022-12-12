@@ -1,10 +1,9 @@
 package com.example.app.repositories;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import com.example.app.entities.Users;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
 public interface UsersRepository extends CrudRepository<Users, Integer> {
     @Query("select u from Users u where u.username like %?1 and u.password like %?2")

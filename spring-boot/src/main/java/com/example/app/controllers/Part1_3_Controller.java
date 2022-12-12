@@ -1,15 +1,8 @@
 package com.example.app.controllers;
 
-import java.math.BigDecimal;
-import java.util.*;
-
 import com.example.app.entities.Book;
-import com.example.app.entities.*;
 import com.example.app.forms.FormBook;
-import com.example.app.services.*;
-
-import java.math.BigDecimal;
-import java.util.List;
+import com.example.app.services.BookService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,14 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
+import java.math.BigDecimal;
+
 @Controller
 public class Part1_3_Controller {
-    @Autowired
-    UsersService usersService;
-
-    @Autowired
-    MessagesService messagesService;
-
     @Autowired
     BookService bookService;
 
@@ -76,7 +67,7 @@ public class Part1_3_Controller {
             }
         }
 
-        List<Book> books = this.bookService.searchBooks(formBook);
+        List<Book> books = this.bookService.part1_3_vuln(formBook);
         
         model.addAttribute("show_description", formBook.getShow_summaries());
         model.addAttribute("books", books);
@@ -128,7 +119,7 @@ public class Part1_3_Controller {
             }
         }
 
-        List<Book> books = this.bookService.searchBooks(formBook);
+        List<Book> books = this.bookService.part1_3_non_vuln(formBook);
         
         model.addAttribute("show_description", formBook.getShow_summaries());
         model.addAttribute("books", books);

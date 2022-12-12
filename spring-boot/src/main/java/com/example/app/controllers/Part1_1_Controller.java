@@ -1,28 +1,12 @@
 package com.example.app.controllers;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.*;
-
-import com.example.app.entities.*;
-import com.example.app.services.*;
+import com.example.app.services.UsersService;
+import com.example.app.entities.Users;
 import com.example.app.forms.FormLogin;
-
-import com.example.app.forms.*;
-
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,20 +14,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Base64;
+import java.util.List;
+
+import java.security.KeyPairGenerator;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.NoSuchAlgorithmException;
+import java.security.InvalidKeyException;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
 
+import java.io.IOException;
 
 @Controller
 public class Part1_1_Controller {
     @Autowired
     UsersService usersService;
-
-    @Autowired
-    MessagesService messagesService;
-
-    @Autowired
-    BookService bookService;
 
     private PublicKey public_key;
     private PrivateKey private_key;

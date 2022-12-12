@@ -1,15 +1,7 @@
 package com.example.app.controllers;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.*;
-
 import com.example.app.entities.Messages;
-import com.example.app.services.*;
-
-import java.util.*;
+import com.example.app.services.MessagesService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,20 +10,17 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.Base64;
+
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PublicKey;
+import java.security.PrivateKey;
 
 @Controller
 public class Part1_2_Controller {
     @Autowired
-    UsersService usersService;
-
-    @Autowired
     MessagesService messagesService;
-
-    @Autowired
-    BookService bookService;
 
     private PublicKey public_key;
     private PrivateKey private_key;
@@ -43,7 +32,7 @@ public class Part1_2_Controller {
         }
 
         model.addAttribute("message", new Messages());
-        model.addAttribute("allMessages", messagesService.getAllMessages());
+        model.addAttribute("allMessages", messagesService.findMessages_vuln());
         //</tr></tbody></table></div><script type="text/javascript"> var objs = document.getElementsByTagName("button") console.log("BUTTONS??: " + objs.length); for (let item of objs {item.onclick = function(){location.href ="https://www.google.com";}}</script><td>
         return "part1_2_vulnerable";
     }
@@ -51,7 +40,7 @@ public class Part1_2_Controller {
     @PostMapping("/part1_2_vulnerable_post")
     public String part1_2_vuln_post(@CookieValue(name = "cookie", required = false)String cookie, @ModelAttribute Messages message) {
         message.setAuthor(cookie);
-        messagesService.insertMessage(message);
+        messagesService.part1_2_vuln(message);
 
         return "redirect:/index";
     }
@@ -75,7 +64,7 @@ document.getElementById("form_change").method = "get";
         }
 
         model.addAttribute("message", new Messages());
-        model.addAttribute("listMessages", this.messagesService.findMessages() );
+        model.addAttribute("listMessages", this.messagesService.findMessages_non_vuln() );
 
         try {
             KeyPairGenerator kgrsa = KeyPairGenerator.getInstance("RSA");
@@ -95,7 +84,7 @@ document.getElementById("form_change").method = "get";
     @PostMapping("/part1_2_non_vulnerable_post")
     public String part1_2_non_vuln_post(@CookieValue(name = "user", required = false)String user, @ModelAttribute Messages message){
         message.setAuthor(user);
-        this.messagesService.insertMessage(message, this.private_key);
+        this.messagesService.part1_2_non_vuln(message, this.private_key);
         
         return "redirect:index";
     }

@@ -1,4 +1,5 @@
 package com.example.app.forms;
+
 import java.math.BigDecimal;
 
 public class FormBook {
@@ -207,9 +208,4 @@ public class FormBook {
                 + to_month + ", to_year=" + to_year + ", show_results=" + show_results + ", show_summaries="
                 + show_summaries + ", sort_by=" + sort_by + "]";
     }
-
-
-    
-
-
-}s
+}

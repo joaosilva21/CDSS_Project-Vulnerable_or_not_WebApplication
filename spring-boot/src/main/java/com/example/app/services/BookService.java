@@ -1,25 +1,23 @@
 package com.example.app.services;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
-import java.time.LocalDate;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
-import java.math.BigDecimal;
+import com.example.app.repositories.BookRepository;
+import com.example.app.entities.Book;
+import com.example.app.forms.FormBook;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.example.app.entities.Book;
-import com.example.app.forms.FormBook;
-import com.example.app.repositories.BookRepository;
+import java.util.*;
+
+import javax.persistence.Query;
+import javax.persistence.EntityManager;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Service
 public class BookService {
@@ -29,7 +27,7 @@ public class BookService {
     @Autowired
     private EntityManager em;
 
-	public List<Book> searchBooks_vuln(FormBook formBook){
+	public List<Book> part1_3_vuln(FormBook formBook){
         String arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12,
 	 arg13, arg14, arg15, arg16, arg17, arg18, arg19 = LocalDate.now().toString(), arg20 = LocalDate.now().toString(), arg21, arg22, arg23;
         
@@ -141,7 +139,7 @@ public class BookService {
         return books;
 	}
 
-    public List<Book> searchBooks_non_vuln(FormBook formBook){
+    public List<Book> part1_3_non_vuln(FormBook formBook){
         Boolean adv_title = false, adv_authors = false, adv_description = false, adv_keywords = false, adv_notes = false;
         LocalDate date_more = LocalDate.now(), date_less = LocalDate.now();
 		
@@ -183,7 +181,7 @@ public class BookService {
 			}   
         }
 		
-		return this.bookRepository.searchBooks(formBook.getTitle(), formBook.getTitle().compareTo("") == 0, 
+		return this.bookRepository.searchBooks_non_vuln(formBook.getTitle(), formBook.getTitle().compareTo("") == 0, 
                                                formBook.getAuthors(), formBook.getAuthors().compareTo("") == 0, 
                                                formBook.getCategory(), formBook.getCategory().compareTo("All") == 0, 
                                                formBook.getPrice_less() , formBook.getPrice_less() == null || formBook.getPrice_less().compareTo(new BigDecimal(0)) == 0, 

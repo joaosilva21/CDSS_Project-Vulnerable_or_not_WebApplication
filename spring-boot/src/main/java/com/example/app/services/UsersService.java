@@ -1,36 +1,34 @@
 package com.example.app.services;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.SecureRandom;
-import java.util.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.security.SecureRandom;
-import java.util.*;
-
-import javax.transaction.Transactional;
-import javax.persistence.Query;
-import javax.persistence.EntityManager;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.amdelamar.jotp.OTP;
-import com.amdelamar.jotp.type.Type;
 import com.example.app.entities.Users;
 import com.example.app.forms.FormLogin;
 import com.example.app.forms.FormRegister;
 import com.example.app.repositories.UsersRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.SecureRandom;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import javax.persistence.Query;
+import javax.persistence.EntityManager;
+
 import javax.crypto.Cipher;
+import org.apache.commons.codec.digest.DigestUtils;
+import com.amdelamar.jotp.OTP;
+import com.amdelamar.jotp.type.Type;
+
 
 @Service
 public class UsersService {
@@ -41,7 +39,7 @@ public class UsersService {
     private EntityManager em;
 
     public List<Users> part1_1_vuln(FormLogin formlogin){
-        List<Users> users = new ArrayList();
+        List<Users> users = new ArrayList<>();
 
         String sql_salt = "SELECT * FROM users WHERE username = '" + formlogin.getUsername() + "'";
         Query query_salt = em.createNativeQuery(sql_salt);
@@ -59,7 +57,7 @@ public class UsersService {
         Query query_login = em.createNativeQuery(sql_login);
         List<Object[]> o_login = query_login.getResultList();
         for(Object[] obj : o_login){
-            users.add(new Users((String)obj[0], null, null));
+            users.add(new Users((String)obj[0], null, null, null));
         }
 
         return users;
@@ -154,7 +152,8 @@ public class UsersService {
                     return 3; 
                 }
             }
-        }catch(Exception e){
+        }
+        catch(Exception e){
             System.out.println(e);
         }
 
