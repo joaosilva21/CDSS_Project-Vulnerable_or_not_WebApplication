@@ -46,7 +46,7 @@ public class UsersService {
         List<Object[]> o_salt = query_salt.getResultList();
         List<String> salts = new ArrayList();
         for(Object[] obj : o_salt){
-            salts.add((String)obj[2]);
+            salts.add((String)obj[3]);
         }
 
         if(salts.size() == 0){
@@ -74,11 +74,12 @@ public class UsersService {
             }
         }
         
-        /*byte[] salt_bytes = new byte[32];
+        byte[] salt_bytes = new byte[8];
         new SecureRandom().nextBytes(salt_bytes);
-        String salt = Base64.getEncoder().encodeToString(salt_bytes);*/
+        String salt = Base64.getEncoder().encodeToString(salt_bytes);
 
-        String sql_insert_user = "INSERT INTO users (username, password, salt) VALUES('" + formRegister.getUsername() + "', '" + DigestUtils.sha256Hex(formRegister.getPassword()) + "', '')"; 
+        String sql_insert_user = "INSERT INTO users (username, password, salt, qrcode) VALUES('" + formRegister.getUsername() + "', " + 
+                                 "'" + DigestUtils.sha256Hex(formRegister.getPassword() + salt) + "', '" + salt + "', '" + OTP.randomBase32(20) + "')"; 
         Query query = em.createNativeQuery(sql_insert_user);
         query.executeUpdate();
 
