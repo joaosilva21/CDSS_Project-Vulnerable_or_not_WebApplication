@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
+
 @Controller
 public class Index {
     @GetMapping("/index")
-    public String index() {
+    public String index(HttpServletResponse response) {
 
         return "index";
     }
