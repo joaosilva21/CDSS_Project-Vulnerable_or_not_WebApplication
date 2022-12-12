@@ -49,10 +49,12 @@ public class UsersService {
             salts.add((String)obj[3]);
         }
 
+        System.out.println(DigestUtils.sha256Hex(formlogin.getPassword() + salts.get(0)));
+
         if(salts.size() == 0){
             return users;
         }
-
+        
         String sql_login = "SELECT * FROM users WHERE username = '" + formlogin.getUsername() + "' AND password = '" + DigestUtils.sha256Hex(formlogin.getPassword() + salts.get(0)) + "'";
         Query query_login = em.createNativeQuery(sql_login);
         List<Object[]> o_login = query_login.getResultList();
@@ -73,13 +75,9 @@ public class UsersService {
                 return false;
             }
         }
-        
-        byte[] salt_bytes = new byte[8];
-        new SecureRandom().nextBytes(salt_bytes);
-        String salt = Base64.getEncoder().encodeToString(salt_bytes);
 
         String sql_insert_user = "INSERT INTO users (username, password, salt, qrcode) VALUES('" + formRegister.getUsername() + "', " + 
-                                 "'" + DigestUtils.sha256Hex(formRegister.getPassword() + salt) + "', '" + salt + "', '" + OTP.randomBase32(20) + "')"; 
+                                 "'" + DigestUtils.sha256Hex(formRegister.getPassword()) + "', '', '" + OTP.randomBase32(20) + "')"; 
         Query query = em.createNativeQuery(sql_insert_user);
         query.executeUpdate();
 

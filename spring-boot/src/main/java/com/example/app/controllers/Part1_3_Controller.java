@@ -16,6 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import java.math.BigDecimal;
 
 @Controller
@@ -26,8 +29,14 @@ public class Part1_3_Controller {
     @GetMapping("/part1_3_vulnerable")
     public String part1_3_vuln(@CookieValue(name = "user", required = false)String user,
                                 @RequestParam(name = "books", required = false)List<Book> books, 
-                                @RequestParam(name = "show_description", required = false) Boolean show_description, Model model) {
+                                @RequestParam(name = "show_description", required = false) Boolean show_description, 
+                                Model model, HttpServletResponse response) {
         if(user == null){
+            Cookie error_index = new Cookie("error_index", "12");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
             return "redirect:/index";
         }
                                     
@@ -79,8 +88,14 @@ public class Part1_3_Controller {
     @GetMapping("/part1_3_non_vulnerable")
     public String part1_3_non_vuln(@CookieValue(name = "user", required = false)String user,
                                    @RequestParam(name = "books", required = false)List<Book> books, 
-                                   @RequestParam(name = "show_description", required = false) Boolean show_description,  Model model) {
+                                   @RequestParam(name = "show_description", required = false) Boolean show_description,  
+                                   Model model, HttpServletResponse response) {
         if(user == null){
+            Cookie error_index = new Cookie("error_index", "12");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
             return "redirect:/index";
         }
             

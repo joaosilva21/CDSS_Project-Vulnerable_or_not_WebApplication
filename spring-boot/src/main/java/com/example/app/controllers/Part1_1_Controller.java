@@ -38,8 +38,13 @@ public class Part1_1_Controller {
     private PrivateKey private_key;
 
     @GetMapping("/part1_1_vulnerable")
-    public String part1_1_vuln(@CookieValue(name = "user", required = false)String user, @RequestParam(name = "error", required = false) String error, Model model) {
+    public String part1_1_vuln(@CookieValue(name = "user", required = false)String user, @RequestParam(name = "error", required = false) String error, Model model, HttpServletResponse response) {
         if(user != null){
+            Cookie error_index = new Cookie("error_index", "11");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
             return "redirect:/index";
         }
   
@@ -72,12 +77,17 @@ public class Part1_1_Controller {
     }
 
     @GetMapping("/part1_1_non_vulnerable")
-    public String part1_1_non_vuln(@CookieValue(name = "error", required = false) String error, @CookieValue(name = "user", required = false) String user, Model model) {
+    public String part1_1_non_vuln(@CookieValue(name = "error", required = false) String error, @CookieValue(name = "user", required = false) String user, Model model, HttpServletResponse response) {
         if(user != null){
+            Cookie error_index = new Cookie("error_index", "11");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
             return "redirect:/index";
         }
         
-        if(error != null && error.compareTo("1") == 0){
+        if(error != null){
             model.addAttribute("error", error);
         }
 

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.Base64;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PublicKey;
@@ -26,8 +29,13 @@ public class Part1_2_Controller {
     private PrivateKey private_key;
 
     @GetMapping("/part1_2_vulnerable")
-    public String part1_2_vuln(@CookieValue(name = "user", required = false)String user, Model model) {
+    public String part1_2_vuln(@CookieValue(name = "user", required = false)String user, Model model, HttpServletResponse response) {
         if(user == null){
+            Cookie error_index = new Cookie("error_index", "12");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
             return "redirect:/index";
         }
 
@@ -58,8 +66,13 @@ document.getElementById("form_change").method = "get";
 </script>*/
 
     @GetMapping("/part1_2_non_vulnerable")
-    public String part1_2_non_vuln(@CookieValue(name = "user", required = false)String user, Model model) {
+    public String part1_2_non_vuln(@CookieValue(name = "user", required = false)String user, Model model, HttpServletResponse response) {
         if(user == null){
+            Cookie error_index = new Cookie("error_index", "12");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
             return "redirect:/index";
         }
 

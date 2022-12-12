@@ -52,7 +52,15 @@
             Part 1.4: 
             <a th:href="@{part1_4_vulnerable}"  >Vulnerable</a>
             <a th:href="@{part1_4_non_vulnerable}"  >Non-Vulnerable</a> <br /> 
-
+            <br>
+            <div style="color:red">
+                <td th:if="${error_index == '11'}">
+                    User already logged<br><br>
+                </td>
+                <td th:if="${error_index == '12'}">
+                    User not logged<br><br>
+                </td>
+            </div>
         </div>
 
 

@@ -31,8 +31,6 @@ import com.amdelamar.jotp.OTP;
 import com.amdelamar.jotp.type.Type;
 import java.net.URLEncoder;
 
-
-
 @Controller
 public class Part1_4_Controller {
     @Autowired
@@ -48,8 +46,13 @@ public class Part1_4_Controller {
     private PrivateKey private_key;
 
 	@GetMapping("/part1_4_vulnerable")
-    public String part1_4_vuln(@CookieValue(name = "user", required = false)String user, @RequestParam(name = "error", required = false) String error, Model model){
+    public String part1_4_vuln(@CookieValue(name = "user", required = false)String user, @RequestParam(name = "error", required = false) String error, Model model, HttpServletResponse response){
         if(user != null){
+            Cookie error_index = new Cookie("error_index", "11");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
             return "redirect:/index";
         }
   
@@ -84,8 +87,13 @@ public class Part1_4_Controller {
     }
 
     @GetMapping("/part1_4_non_vulnerable")
-    public String part1_4_non_vuln(@CookieValue(name = "error", required = false) String error, @CookieValue(name = "user", required = false)String user, Model model){
+    public String part1_4_non_vuln(@CookieValue(name = "error", required = false) String error, @CookieValue(name = "user", required = false)String user, Model model, HttpServletResponse response){
         if(user != null){
+            Cookie error_index = new Cookie("error_index", "11");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
             return "redirect:/index";
         }
 
