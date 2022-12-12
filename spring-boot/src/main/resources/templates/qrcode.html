@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+    =========================================
+    Design and Development of Secure Software
+    ============= MSI 2019/2020 =============
+    ======== Practical Assignment #2 ========
+    ================ Part #1 ================
+    =========================================
+      Department of Informatics Engineering
+              University of Coimbra          
+   
+        Nuno Antunes <nmsa@dei.uc.pt>
+        João Antunes <jcfa@dei.uc.pt>
+        Marco Vieira <mvieira@dei.uc.pt>
+   
+-->
+<html>
+    <head>
+        <title>DDSS PA2 - QR_CODE</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--
+            V2 info:
+            - corrected a few naming bugs in the inputs
+            - fixed a few syntax issues in the HTML
+            - added some explanations
+        -->
+    </head>
+    <body>
+        <main>
+            Hello <span class="username" th:text="${username}"></span>, thank you for creating your account!
+            <p>
+                Scan this QR code to add this site to your 2FA authentication app. You'll need it to log in.
+            </p>
+            <p>
+                <img th:src="${twoFaQrUrl}" />
+            </p>
+        
+            <ul>
+                <li><a th:href="@{index}">Back to Index</a></li>
+            </ul>
+        
+        </main>
+    </body>
+</html>

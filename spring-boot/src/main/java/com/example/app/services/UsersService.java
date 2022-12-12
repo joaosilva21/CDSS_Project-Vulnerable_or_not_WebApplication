@@ -2,30 +2,33 @@ package com.example.app.services;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.util.*;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.amdelamar.jotp.OTP;
+import com.amdelamar.jotp.type.Type;
 import com.example.app.entities.Users;
 import com.example.app.forms.FormLogin;
 import com.example.app.forms.FormRegister;
 import com.example.app.repositories.UsersRepository;
 
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
 
 @Service
 public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
-    public Boolean part1_1_non_vuln(FormLogin formlogin, PrivateKey private_key){
+    public Boolean part1_1_non_vuln(FormLogin formlogin, PrivateKey private_key) throws InvalidKeyException, IllegalArgumentException, NoSuchAlgorithmException, IOException{
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, private_key);
@@ -38,14 +41,20 @@ public class UsersService {
 
         String salt = usersRepository.findSaltByUsername(formlogin.getUsername());
         Users user = usersRepository.ValidateUser(formlogin.getUsername(), DigestUtils.sha256Hex(formlogin.getPassword() + salt));
-
+        
+        
         if(user == null){
             return false;
         }
 
+        if(!(OTP.create(user.getQrcode(), OTP.timeInHex(System.currentTimeMillis(), 30), 6, Type.TOTP).compareTo(formlogin.getQrcode()) == 0)){
+            return false;
+        }
+
+
         return true;
     }
-
+    
     public int part1_4_non_vuln(FormRegister formRegister, PrivateKey private_key){
         try {
             Cipher cipher = Cipher.getInstance("RSA");
@@ -99,10 +108,13 @@ public class UsersService {
         new SecureRandom().nextBytes(salt_bytes);
         String salt = Base64.getEncoder().encodeToString(salt_bytes);
         
-        usersRepository.save(new Users(formRegister.getUsername(), DigestUtils.sha256Hex(formRegister.getPassword() + salt), salt));
+        usersRepository.save(new Users(formRegister.getUsername(), DigestUtils.sha256Hex(formRegister.getPassword() + salt), salt, OTP.randomBase32(20)));
         
         return 0;
+    }
 
+    public String findQRCodeByUsername(String username){
+        return this.usersRepository.findQRCodeByUsername(username);
     }
 
 }
