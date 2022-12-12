@@ -49,8 +49,6 @@ public class UsersService {
             salts.add((String)obj[3]);
         }
 
-        System.out.println(DigestUtils.sha256Hex(formlogin.getPassword() + salts.get(0)));
-
         if(salts.size() == 0){
             return users;
         }
@@ -58,7 +56,7 @@ public class UsersService {
         String sql_login = "SELECT * FROM users WHERE username = '" + formlogin.getUsername() + "' AND password = '" + DigestUtils.sha256Hex(formlogin.getPassword() + salts.get(0)) + "'";
         Query query_login = em.createNativeQuery(sql_login);
         List<Object[]> o_login = query_login.getResultList();
-        for(Object[] obj : o_login){
+        for(Object[]  obj : o_login){
             users.add(new Users((String)obj[0], null, null, null));
         }
 

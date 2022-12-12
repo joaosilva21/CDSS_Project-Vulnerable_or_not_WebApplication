@@ -61,11 +61,13 @@
                     User not logged<br><br>
                 </td>
             </div>
+            <td th:if="${user != null}">
+                <form th:action="@{/logout}" method="post" >
+                    <button type="submit"> Logout </button>
+                </form>
+            </td>
+            
         </div>
-
-
-
-
 
     </body>
 </html>
