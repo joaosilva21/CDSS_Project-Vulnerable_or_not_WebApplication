@@ -42,5 +42,4 @@ public class FormLogin {
         this.qrcode = qrcode;
     }
 
-    
 }

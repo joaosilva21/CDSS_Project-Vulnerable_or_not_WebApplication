@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int book_id;
     @Size(max = 128)
     private String title;
@@ -39,7 +39,8 @@ public class Book {
 
     }
 
-    public Book(String title, String authors, String category, BigDecimal price, LocalDate book_date, String description, String keywords, String notes, int recomendation) {
+    public Book(int book_id, String title, String authors, String category, BigDecimal price, LocalDate book_date, String description, String keywords, String notes, int recomendation) {
+        this.book_id = book_id;
         this.title = title;
         this.authors = authors;
         this.category = category;

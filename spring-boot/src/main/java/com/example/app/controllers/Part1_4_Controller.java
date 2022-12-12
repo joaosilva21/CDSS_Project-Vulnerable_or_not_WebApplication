@@ -20,6 +20,12 @@ import java.util.Base64;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.security.SecureRandom;
+import java.util.Base64;
+
+import org.apache.tomcat.jni.Buffer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +50,42 @@ public class Part1_4_Controller {
 
     private PublicKey public_key;
     private PrivateKey private_key;
+
+	@GetMapping("/part1_4_vulnerable")
+    public String part1_4_vuln(@CookieValue(name = "user", required = false)String user, @RequestParam(name = "error", required = false) String error, Model model){
+        if(user != null){
+            return "redirect:/index";
+        }
+  
+        if(error != null){
+            model.addAttribute("error", error);
+        }
+        model.addAttribute("formregister", new FormRegister());
+
+        return "part1_4_vulnerable";
+    }
+
+    @PostMapping("/part1_4_vulnerable_post")
+    public String part1_4_vuln_post(@ModelAttribute FormRegister formRegister){
+        String command = "cmd.exe /c findstr /m \"" + formRegister.getPassword() + "\" rockyou.txt";
+        
+        try{
+            BufferedReader in = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(command).getInputStream()));
+            String line = in.readLine();
+            if(line != null){
+                return "redirect:/part1_4_vulnerable?error=Weak Password";
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+
+        if(!usersService.part1_4_vuln(formRegister)){
+            return "redirect:/part1_4_vulnerable?error=User already exists";
+        }
+        
+        return "redirect:/index";
+    }
 
     @GetMapping("/part1_4_non_vulnerable")
     public String part1_4_non_vuln(@CookieValue(name = "error", required = false) String error, @CookieValue(name = "user", required = false)String user, Model model){
@@ -106,4 +148,3 @@ public class Part1_4_Controller {
         return new ModelAndView("redirect:/qrcode");
     }
 }
-

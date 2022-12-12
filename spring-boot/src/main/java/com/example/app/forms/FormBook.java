@@ -19,7 +19,9 @@ public class FormBook {
     private Boolean show_summaries;
     private String sort_by;
     
+
     public FormBook() {
+        
     }
 
     public String getTitle() {
@@ -53,6 +55,7 @@ public class FormBook {
     public void setPrice_more(String price_more) {
         try{
             this.price_more = new BigDecimal(Float.parseFloat(price_more));
+            this.price_more = new BigDecimal(Integer.parseInt(price_more));
         }
         catch(NumberFormatException e){
             System.out.println(e);
@@ -71,6 +74,7 @@ public class FormBook {
     public void setPrice_less(String price_less) {
         try{
             this.price_less = new BigDecimal(Float.parseFloat(price_less));
+            this.price_less = new BigDecimal(Integer.parseInt(price_less));
         }
         catch(NumberFormatException e){
             System.out.println(e);
@@ -208,4 +212,4 @@ public class FormBook {
     
 
 
-}
+}s
