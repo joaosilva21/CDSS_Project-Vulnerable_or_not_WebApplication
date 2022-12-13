@@ -60,6 +60,9 @@
                 <td th:if="${error_index == '12'}">
                     User not logged<br><br>
                 </td>
+                <td th:if="${error_index == '13'}">
+                    An error occurred during registration, don't refresh the qrcode page<br><br>
+                </td>
             </div>
             <td th:if="${user != null}">
                 <form th:action="@{/logout}" method="post" >

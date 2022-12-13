@@ -140,11 +140,21 @@ public class Part1_4_Controller {
 
     
     @GetMapping("/qrcode")
-    public String qrcode(@CookieValue(name = "error_register", required = false) String error_register, Model model) throws UnsupportedEncodingException{
+    public String qrcode(@CookieValue(name = "error_register", required = false) String error_register, 
+                          Model model, HttpServletResponse response) throws UnsupportedEncodingException{
         FormRegister formRegister;
 
         if((formRegister = (FormRegister) (model.asMap().get("formregister"))) == null){
             formRegister = (FormRegister) (model.asMap().get("nice_try"));
+        }
+
+        if(formRegister == null){
+            Cookie error_index = new Cookie("error_index", "13");
+            error_index.setSecure(true);
+            error_index.setMaxAge(1);
+            response.addCookie(error_index);
+
+            return "redirect:/index";
         }
 
         if(error_register != null){
