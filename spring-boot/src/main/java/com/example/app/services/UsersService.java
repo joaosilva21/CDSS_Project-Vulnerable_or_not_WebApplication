@@ -105,11 +105,10 @@ public class UsersService {
             return false;
         }
 
-
         return true;
     }
     
-    public int part1_4_non_vuln(FormRegister formRegister, PrivateKey private_key){
+    public int part1_4_non_vuln_verify(FormRegister formRegister, PrivateKey private_key){
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, private_key);
@@ -158,14 +157,16 @@ public class UsersService {
         if(user != null){
             return 2;
         }
+              
+        return 0;
+    }
 
+    public void part1_4_non_vuln(FormRegister formRegister, String secret){
         byte[] salt_bytes = new byte[32];
         new SecureRandom().nextBytes(salt_bytes);
         String salt = Base64.getEncoder().encodeToString(salt_bytes);
-        
-        usersRepository.save(new Users(formRegister.getUsername(), DigestUtils.sha256Hex(formRegister.getPassword() + salt), salt, OTP.randomBase32(20)));
-        
-        return 0;
+
+        usersRepository.save(new Users(formRegister.getUsername(), DigestUtils.sha256Hex(formRegister.getPassword() + salt), salt, secret));
     }
 
     public String findQRCodeByUsername(String username){

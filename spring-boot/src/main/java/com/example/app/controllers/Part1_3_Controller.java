@@ -112,24 +112,19 @@ public class Part1_3_Controller {
     @PostMapping("/part1_3_non_vulnerable_post")
     public String part1_3_non_vuln_post(@ModelAttribute FormBook formBook, RedirectAttributes model) {
         if(formBook.getPrice_more().compareTo(new BigDecimal(-2)) == 0){
-            System.out.println("Price More invalid");
             return "redirect:/index";
         }
 
         if(formBook.getPrice_less().compareTo(new BigDecimal(-3)) == 0){
-            System.out.println("Price Less invalid");
-            
             return "redirect:/index";
         }
 
         if(formBook.getDate() != null && formBook.getDate().compareTo("specific") == 0){
             if(formBook.getFrom_day() == 0 || formBook.getFrom_month() == 0 ||formBook.getFrom_year() == -4){
-                System.out.println("From Date invalid");
                 return "redirect:/index";
             }
             
             if(formBook.getTo_day() == 0 || formBook.getTo_month() == 0 || formBook.getTo_year() == -5){
-                System.out.println("To Date invalid");
                 return "redirect:/index";
             }
         }

@@ -46,8 +46,8 @@ public class Part1_2_Controller {
     }
 
     @PostMapping("/part1_2_vulnerable_post")
-    public String part1_2_vuln_post(@CookieValue(name = "cookie", required = false)String cookie, @ModelAttribute Messages message) {
-        message.setAuthor(cookie);
+    public String part1_2_vuln_post(@CookieValue(name = "user", required = false)String user, @ModelAttribute Messages message) {
+        message.setAuthor(user);
         messagesService.part1_2_vuln(message);
 
         return "redirect:/index";

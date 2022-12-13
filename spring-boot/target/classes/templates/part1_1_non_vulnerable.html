@@ -50,6 +50,9 @@
             }
         </script>
 
+        <form th:action="@{/index}" method="get" >
+            <button type="submit" style="position:absolute; top:0; left:0; margin-top:1%; margin-left:1%;">Back to Index</button>
+        </form>
         <div align="center">
 
             <h1>Design and Development of Secure Software</h1>
@@ -82,7 +85,7 @@
                         </tr>
                         <tr>
                             <td><label>2FA Token</label> </td>
-                            <td><input type="text" id="pw" placeholder="Enter QRCode" name="c_qrcode" th:field="*{qrcode}" required> </td>
+                            <td><input type="password" id="pw" placeholder="Enter QRCode" name="c_qrcode" th:field="*{qrcode}" required> </td>
                         </tr>
                         <tr>
                             <td><label>Remember me</label></td>

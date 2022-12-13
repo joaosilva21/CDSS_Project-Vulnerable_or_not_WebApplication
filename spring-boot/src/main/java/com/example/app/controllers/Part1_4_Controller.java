@@ -1,4 +1,5 @@
 package com.example.app.controllers;
+import com.example.app.forms.FormQRcode;
 import com.example.app.forms.FormRegister;
 import com.example.app.services.*;
 
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Base64;
 
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -24,6 +27,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.InputStreamReader;
 
@@ -117,27 +121,9 @@ public class Part1_4_Controller {
         return "part1_4_non_vulnerable";
     }
 
-    @GetMapping("/qrcode")
-    public String qrcode(Model model) throws UnsupportedEncodingException{
-        FormRegister formRegister = (FormRegister) (model.asMap().get("formregister"));
-
-        String secret = this.usersService.findQRCodeByUsername(formRegister.getUsername());
-        String otpUrl = OTP.getURL(secret, 6, Type.TOTP, "spring-boot-2fa-demo", formRegister.getUsername());
-
-        String twoFaQrUrl = String.format(
-            "https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=%s",
-            URLEncoder.encode(otpUrl, "UTF-8")); // "UTF-8" shouldn't be unsupported but it's a checked exception :(
-
-        model.addAttribute("twoFaQrUrl", twoFaQrUrl);
-        model.addAttribute("username", formRegister.getUsername());
-
-        return "qrcode";
-    }
-    
-
     @PostMapping("/part1_4_non_vulnerable_post")
     public ModelAndView part1_4_non_vuln_post(@ModelAttribute FormRegister formRegister, HttpServletResponse response, RedirectAttributes model){
-        int error_value = usersService.part1_4_non_vuln(formRegister, this.private_key);
+        int error_value = usersService.part1_4_non_vuln_verify(formRegister, this.private_key);
         Cookie error = new Cookie("error", String.valueOf(error_value));
         error.setSecure(true);
         error.setMaxAge(1);
@@ -150,5 +136,50 @@ public class Part1_4_Controller {
         model.addFlashAttribute("formregister", formRegister);
         
         return new ModelAndView("redirect:/qrcode");
+    }
+
+    
+    @GetMapping("/qrcode")
+    public String qrcode(@CookieValue(name = "error_register", required = false) String error_register, Model model) throws UnsupportedEncodingException{
+        FormRegister formRegister;
+
+        if((formRegister = (FormRegister) (model.asMap().get("formregister"))) == null){
+            formRegister = (FormRegister) (model.asMap().get("nice_try"));
+        }
+
+        if(error_register != null){
+            model.addAttribute("error_register", error_register);
+        }
+
+        String secret = OTP.randomBase32(20); //this.usersService.findQRCodeByUsername(formRegister.getUsername());
+        String otpUrl = OTP.getURL(secret, 6, Type.TOTP, "spring-boot-2fa-demo", formRegister.getUsername());
+
+        String twoFaQrUrl = String.format(
+            "https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=%s",
+            URLEncoder.encode(otpUrl, "UTF-8")); // "UTF-8" shouldn't be unsupported but it's a checked exception :(
+
+        model.addAttribute("twoFaQrUrl", twoFaQrUrl);
+        model.addAttribute("formqrcode", new FormQRcode(secret));
+        model.addAttribute("formregister", formRegister);
+
+        return "qrcode";
+    }
+
+    @PostMapping("/qrcode_post")
+    public ModelAndView qrcode_post(@ModelAttribute("formqrcode") FormQRcode formQRcode, @ModelAttribute("formregister") FormRegister formRegister,
+                              RedirectAttributes model, HttpServletResponse response) throws InvalidKeyException, IllegalArgumentException, NoSuchAlgorithmException, IOException{
+        if(!(OTP.create(formQRcode.getQrcode(), OTP.timeInHex(System.currentTimeMillis(), 30), 6, Type.TOTP).compareTo(formQRcode.getCode()) == 0)){
+            model.addFlashAttribute("nice_try", formRegister);
+            Cookie error_register = new Cookie("error_register", "21");
+            error_register.setSecure(true);
+            error_register.setMaxAge(1);
+            response.addCookie(error_register);
+            
+            return new ModelAndView("redirect:/qrcode");
+        }
+
+        usersService.part1_4_non_vuln(formRegister, formQRcode.getQrcode());
+
+        return new ModelAndView("redirect:/index");
     }
 }

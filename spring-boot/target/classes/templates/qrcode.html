@@ -27,19 +27,62 @@
         -->
     </head>
     <body>
-        <main>
-            Hello <span class="username" th:text="${username}"></span>, thank you for creating your account!
+        <form th:action="@{/index}" method="get" >
+            <button type="submit" style="position:absolute; top:0; left:0; margin-top:1%; margin-left:1%;">Back to Index</button>
+        </form>
+        <div align="center">
+
+            <h1>Design and Development of Secure Software</h1>
+            <h2>Practical Assignment #2 - Part 1.X</h2>
+            <div align="center">
+                DISCLAIMER: This code is to be used in the scope of the <em>DDSS</em> course.
+                <b>Important:</b> these sources are merely suggestions of implementations. 
+                You should modify everything you deem as necessary and be responsible for all the content that is delivered.
+                <em>The contents of this repository do not replace the proper reading of the assignment description.</em>
+            </div>
+            <br>
+            <br>
+
+            Hello <b><span class="username" th:text="${formregister.username}"></span></b>, thank you for creating your account!
             <p>
                 Scan this QR code to add this site to your 2FA authentication app. You'll need it to log in.
             </p>
             <p>
                 <img th:src="${twoFaQrUrl}" />
             </p>
+            
+            <form id="form" th:action="@{/qrcode_post}" method = "post">
+                <div th:object="${formregister}">
+                    <input hidden name="username" th:value="${formregister.username}">
+                    <input hidden name="password" th:value="${formregister.password}">
+                </div>
+                <div th:object="${formqrcode}">
+                    <input hidden name="qrcode" th:value="${formqrcode.qrcode}">
+                    <table  style="width: 300px ; background-color:#bea9a9" border="1" cellpadding="1">
+                        <thead>
+                            <tr>
+                                <th colspan="2"><b>Part 1.X - QRCode</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><label>Code</label></td>
+                                <td><input type="password" placeholder="Enter Username" name="c_username" th:field="*{code}" required></td>
+                            </tr>
+                            <tr>
+                                <td align="right" id="buttonId" colspan="2"><button type="submit">Verify</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form> 
+            <br>
+            <div style="color:red">
+                <td th:if="${error_register == '21'}">
+                    Invalid QRCode introduced<br><br>
+                </td>
+            </div>
         
-            <ul>
-                <li><a th:href="@{index}">Back to Index</a></li>
-            </ul>
-        
-        </main>
+        </div>
     </body>
 </html>
