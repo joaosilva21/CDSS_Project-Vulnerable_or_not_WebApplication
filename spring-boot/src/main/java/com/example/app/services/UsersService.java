@@ -148,6 +148,8 @@ public class UsersService {
                     return 3; 
                 }
             }
+            
+            br.close();
         }
         catch(Exception e){
             System.out.println(e);

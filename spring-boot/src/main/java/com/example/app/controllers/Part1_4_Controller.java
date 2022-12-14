@@ -78,6 +78,8 @@ public class Part1_4_Controller {
             if(line != null){
                 return "redirect:/part1_4_vulnerable?error=Weak Password";
             }
+            
+            in.close();
         }
         catch(Exception e){
             System.out.println(e);
