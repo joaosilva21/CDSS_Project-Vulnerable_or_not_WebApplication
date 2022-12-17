@@ -38,8 +38,9 @@ public class UsersService {
     @Autowired
     private EntityManager em;
 
-    public List<Users> part1_1_vuln(FormLogin formlogin){
+    public List<Object> part1_1_vuln(FormLogin formlogin){
         List<Users> users = new ArrayList<>();
+        List<Object> returns = new ArrayList<Object>();
 
         String sql_salt = "SELECT * FROM users WHERE username = '" + formlogin.getUsername() + "'";
         Query query_salt = em.createNativeQuery(sql_salt);
@@ -50,7 +51,9 @@ public class UsersService {
         }
 
         if(salts.size() == 0){
-            return users;
+            returns.add(users);
+            returns.add(1);
+            return returns;
         }
         
         String sql_login = "SELECT * FROM users WHERE username = '" + formlogin.getUsername() + "' AND password = '" + DigestUtils.sha256Hex(formlogin.getPassword() + salts.get(0)) + "'";
@@ -60,7 +63,9 @@ public class UsersService {
             users.add(new Users((String)obj[0], null, null, null));
         }
 
-        return users;
+        returns.add(users);
+        returns.add(2);
+        return returns;
     }
 
     @Transactional

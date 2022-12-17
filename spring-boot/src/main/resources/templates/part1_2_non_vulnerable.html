@@ -41,7 +41,7 @@
             <br>
             <br>
 
-            <form th:action="@{/part1_2_non_vulnerable_post}" th:object="${message}" method="post" onsubmit="input(event)">
+            <form autocomplete="off" th:action="@{/part1_2_non_vulnerable_post}" th:object="${message}" method="post" onsubmit="input(event)">
                 <input type="hidden" th:field="*{messages_id}">
                 <table  style="width: 500px ; background-color:#f19191" border="1" cellpadding="1" >
                     <thead>

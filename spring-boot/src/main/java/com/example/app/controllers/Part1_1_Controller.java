@@ -60,10 +60,16 @@ public class Part1_1_Controller {
     
     @GetMapping("/part1_1_vulnerable_post")
     public String part1_1_vuln_post(@ModelAttribute FormLogin formLogin, HttpServletResponse response){
-        List<Users> users = usersService.part1_1_vuln(formLogin);
-        
+        List<Object> returns = usersService.part1_1_vuln(formLogin);
+        List<Users> users = (List<Users>)returns.get(0);
+
         if (users.size() == 0){
-            return "redirect:/part1_1_vulnerable?error=Invalid credentials";
+            if((Integer)returns.get(1) == 1){
+                return "redirect:/part1_1_vulnerable?error=This username doesn't exist";
+            }else{
+                return "redirect:/part1_1_vulnerable?error=The password is incorrect";
+            }
+
         }
         else{
             Cookie cookie = new Cookie("user", users.get(0).getUsername());
@@ -76,6 +82,7 @@ public class Part1_1_Controller {
             response.addCookie(cookie);
             return "redirect:/index";
         }
+     
     }
 
     @GetMapping("/part1_1_non_vulnerable")
