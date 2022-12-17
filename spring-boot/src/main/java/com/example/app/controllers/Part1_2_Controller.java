@@ -41,11 +41,11 @@ public class Part1_2_Controller {
 
         model.addAttribute("message", new Messages());
         model.addAttribute("allMessages", messagesService.findMessages_vuln());
-        //</tr></tbody></table></div><script type="text/javascript"> var objs = document.getElementsByTagName("button") console.log("BUTTONS??: " + objs.length); for (let item of objs {item.onclick = function(){location.href ="https://www.google.com";}}</script><td>
+
         return "part1_2_vulnerable";
     }
 
-    @PostMapping("/part1_2_vulnerable_post")
+    @GetMapping("/part1_2_vulnerable_post")
     public String part1_2_vuln_post(@CookieValue(name = "user", required = false)String user, @ModelAttribute Messages message) {
         message.setAuthor(user);
         messagesService.part1_2_vuln(message);

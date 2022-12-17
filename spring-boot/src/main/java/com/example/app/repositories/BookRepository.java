@@ -23,21 +23,21 @@ public interface BookRepository extends CrudRepository<Book, Integer>{
            "       (b.category = ?5 or True = ?6) and" +
            "       (b.price < ?7 or True = ?8) and" +
            "       (b.price > ?9 or True = ?10) and" +
-           "       (((b.title like concat('% ', q.parts, ' %') and True = ?12) or" +
-           "        (b.authors like concat('% ', q.parts, ' %') and True = ?13) or" +
-           "        (b.description like concat('% ', q.parts, ' %') and True = ?14) or" +
-           "        (b.keywords like concat('% ', q.parts, ' %') and True = ?15) or" +
-           "        (b.notes like concat('% ', q.parts, ' %') and True = ?16) and 'any' = ?17) or" +
+           "       (((b.title like '% q.parts %' and True = ?12) or" +
+           "        (b.authors like '% q.parts %' and True = ?13) or" +
+           "        (b.description like '% q.parts %' and True = ?14) or" +
+           "        (b.keywords like '% q.parts %' and True = ?15) or" +
+           "        (b.notes like '% q.parts %' and True = ?16) and 'any' = ?17) or" +
            "       ((b.title ~ reg.regex and True = ?12) or" +
            "        (b.authors ~ reg.regex and True = ?13) or" +
            "        (b.description ~ reg.regex and True = ?14) or" +
            "        (b.keywords ~ reg.regex and True = ?15) or" +
            "        (b.notes ~ reg.regex and True = ?16) and 'all' = ?17) or" +
-           "       ((b.title LIKE concat('%', ?11, '%') and True = ?12) or" +
-           "        (b.authors LIKE concat('%', ?11, '%') and True = ?13) or" +
-           "        (b.description LIKE concat('%', ?11, '%') and True = ?14) or" +
-           "        (b.keywords LIKE concat('%', ?11, '%') and True = ?15) or" +
-           "        (b.notes LIKE concat('%', ?11, '%') and True = ?16) and 'phrase' = ?17) or True = ?18) and" +
+           "       ((b.title like '% ?11 %' and True = ?12) or" +
+           "        (b.authors like '% ?11 %' and True = ?13) or" +
+           "        (b.description like '% ?11 %' and True = ?14) or" +
+           "        (b.keywords like '% ?11 %' and True = ?15) or" +
+           "        (b.notes like '% ?11 %' and True = ?16) and 'phrase' = ?17) or True = ?18) and" +
            "       (b.book_date <= ?19) and" +
            "       (b.book_date >= ?20 or True = ?21)")
     public List<Book> searchBooks_non_vuln(String title, Boolean t_use,

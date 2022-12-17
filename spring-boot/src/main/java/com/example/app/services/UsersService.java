@@ -136,7 +136,7 @@ public class UsersService {
             return 5;
         }
 
-        if(!formRegister.getPassword().matches("(.*[!\"#$%&'\\(\\)\\*+,-\\./:;<=>?@\\[\\]\\^_\\{\\}|~].*)*")){
+        if(!formRegister.getPassword().matches("(.*[!#$%\\(\\)\\*+,\\.:;=?@\\[\\]\\^_\\{\\}~/].*)*")){
             return 4;
         }
 

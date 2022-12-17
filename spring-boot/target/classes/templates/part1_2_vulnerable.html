@@ -23,7 +23,7 @@
             </div>
             <br>
             <br>
-            <form id="form_change" th:action="@{/part1_2_vulnerable_post}" th:object="${message}" method="post">
+            <form id="form_change" th:action="@{/part1_2_vulnerable_post}" th:object="${message}" method="get">
                 <input type="hidden" th:field="*{messages_id}">
                 <table  style="width: 500px ; background-color:#f1f1f1" border="1" cellpadding="1" >
                     <thead>

@@ -51,7 +51,7 @@ public class Part1_3_Controller {
         return "part1_3_vulnerable";
     }
 
-    @PostMapping("/part1_3_vulnerable_post")
+    @GetMapping("/part1_3_vulnerable_post")
     public String part1_3_vuln_post(@ModelAttribute FormBook formBook, RedirectAttributes model){
         if(formBook.getPrice_more().compareTo(new BigDecimal(-2)) == 0){
             System.out.println("Price More invalid");

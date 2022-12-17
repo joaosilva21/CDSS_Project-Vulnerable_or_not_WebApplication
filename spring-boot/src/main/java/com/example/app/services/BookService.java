@@ -142,6 +142,8 @@ public class BookService {
     public List<Book> part1_3_non_vuln(FormBook formBook){
         Boolean adv_title = false, adv_authors = false, adv_description = false, adv_keywords = false, adv_notes = false;
         LocalDate date_more = LocalDate.now(), date_less = LocalDate.now();
+
+        formBook.setSearch_for(formBook.getSearch_for().replaceAll("[<>\0|&\"';\\\\-]", ""));
 		
 		if(formBook.getSearch_for().compareTo("") == 0){
             formBook.setSearch_for(" ");

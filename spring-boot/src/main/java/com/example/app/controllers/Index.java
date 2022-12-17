@@ -25,7 +25,7 @@ public class Index {
         return "index";
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/logout_")
     public String logout(HttpServletResponse response) {
         Cookie user = new Cookie("user", null);
         Cookie error_index = new Cookie("error_index", null);

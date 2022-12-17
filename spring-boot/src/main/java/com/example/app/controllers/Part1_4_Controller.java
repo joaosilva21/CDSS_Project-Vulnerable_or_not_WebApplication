@@ -68,7 +68,7 @@ public class Part1_4_Controller {
         return "part1_4_vulnerable";
     }
 
-    @PostMapping("/part1_4_vulnerable_post")
+    @GetMapping("/part1_4_vulnerable_post")
     public String part1_4_vuln_post(@ModelAttribute FormRegister formRegister){
         String command = "cmd.exe /c findstr /m \"" + formRegister.getPassword() + "\" rockyou.txt";
         

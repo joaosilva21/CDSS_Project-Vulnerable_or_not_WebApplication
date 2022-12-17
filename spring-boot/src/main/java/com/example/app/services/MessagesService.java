@@ -56,7 +56,7 @@ public class MessagesService {
             System.out.println(e);
         }
 
-        messagesRepository.save( message);
+        messagesRepository.save(message);
     }
 
     public List<Messages> findMessages_non_vuln(){

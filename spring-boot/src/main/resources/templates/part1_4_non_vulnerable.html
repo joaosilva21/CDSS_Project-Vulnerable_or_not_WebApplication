@@ -9,6 +9,7 @@
     </head>
     <body>
         <form th:action="@{/index}" method="get" >
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <button type="submit" style="position:absolute; top:0; left:0; margin-top:1%; margin-left:1%;">Back to Index</button>
         </form>
         <div align="center">

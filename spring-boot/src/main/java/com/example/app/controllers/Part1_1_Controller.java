@@ -26,6 +26,7 @@ import java.security.InvalidKeyException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 
@@ -37,6 +38,7 @@ public class Part1_1_Controller {
     private PublicKey public_key;
     private PrivateKey private_key;
 
+    
     @GetMapping("/part1_1_vulnerable")
     public String part1_1_vuln(@CookieValue(name = "user", required = false)String user, @RequestParam(name = "error", required = false) String error, Model model, HttpServletResponse response) {
         if(user != null){
@@ -55,8 +57,8 @@ public class Part1_1_Controller {
 
         return "part1_1_vulnerable";
     }
-
-    @PostMapping("/part1_1_vulnerable_post")
+    
+    @GetMapping("/part1_1_vulnerable_post")
     public String part1_1_vuln_post(@ModelAttribute FormLogin formLogin, HttpServletResponse response){
         List<Users> users = usersService.part1_1_vuln(formLogin);
         
@@ -77,7 +79,7 @@ public class Part1_1_Controller {
     }
 
     @GetMapping("/part1_1_non_vulnerable")
-    public String part1_1_non_vuln(@CookieValue(name = "error", required = false) String error, @CookieValue(name = "user", required = false) String user, Model model, HttpServletResponse response) {
+    public String part1_1_non_vuln(@CookieValue(name = "error", required = false) String error, @CookieValue(name = "user", required = false) String user, Model model, HttpServletResponse response) {        
         if(user != null){
             Cookie error_index = new Cookie("error_index", "11");
             error_index.setSecure(true);
