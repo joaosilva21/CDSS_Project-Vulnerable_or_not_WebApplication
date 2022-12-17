@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>DDSS PA2 - Part 1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+    </head>
+    <body>
+        <div align="center">
+
+            <h1>Design and Development of Secure Software</h1>
+            <h2>Practical Assignment #2</h2>
+            <div align="center">
+                DISCLAIMER: This code is to be used in the scope of the <em>DDSS</em> course.
+                <b>Important:</b> these sources are merely suggestions of implementations. 
+                You should modify everything you deem as necessary and be responsible for all the content that is delivered.
+                <em>The contents of this repository do not replace the proper reading of the assignment description.</em>
+            </div>
+            <br>
+            <br>
+            
+            Part 1.1:
+            <a th:href="@{part1_1_vulnerable}"  > Vulnerable</a>
+            <a th:href="@{part1_1_non_vulnerable}"  >Non-Vulnerable</a> <br /> 
+            Part 1.2:
+            <a th:href="@{part1_2_vulnerable}"  >Vulnerable</a>
+            <a th:href="@{part1_2_non_vulnerable}"  >Non-Vulnerable</a> <br />
+            Part 1.3: 
+            <a th:href="@{part1_3_vulnerable}"  >Vulnerable</a>
+            <a th:href="@{part1_3_non_vulnerable}"  >Non-Vulnerable</a> <br /> 
+            Part 1.4: 
+            <a th:href="@{part1_4_vulnerable}"  >Vulnerable</a>
+            <a th:href="@{part1_4_non_vulnerable}"  >Non-Vulnerable</a> <br /> 
+            <br>
+            <div style="color:red">
+                <td th:if="${error_index == '11'}">
+                    User already logged<br><br>
+                </td>
+                <td th:if="${error_index == '12'}">
+                    User not logged<br><br>
+                </td>
+                <td th:if="${error_index == '13'}">
+                    An error occurred during registration, don't refresh the qrcode page<br><br>
+                </td>
+            </div>
+            <td th:if="${user != null}">
+                <form th:action="@{/logout_}" method="post" >
+                    <button type="submit"> Logout </button>
+                </form>
+            </td>
+            
+        </div>
+
+    </body>
+</html>
