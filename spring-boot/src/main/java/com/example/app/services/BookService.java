@@ -9,7 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
@@ -143,7 +145,7 @@ public class BookService {
         Boolean adv_title = false, adv_authors = false, adv_description = false, adv_keywords = false, adv_notes = false;
         LocalDate date_more = LocalDate.now(), date_less = LocalDate.now();
 
-        formBook.setSearch_for(formBook.getSearch_for().replaceAll("[<>\0|&\"';\\\\-]", ""));
+        formBook.setSearch_for(formBook.getSearch_for().replaceAll("[\\(\\)<>\0|&\"';\\\\-]", ""));
 		
 		if(formBook.getSearch_for().compareTo("") == 0){
             formBook.setSearch_for(" ");

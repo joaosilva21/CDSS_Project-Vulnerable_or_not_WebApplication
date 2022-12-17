@@ -31,8 +31,7 @@
             }
         </script>
 
-        <form th:action="@{/index}" method="get" >
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <form th:action="@{/back_to_index}" method="post" >
             <button type="submit" style="position:absolute; top:0; left:0; margin-top:1%; margin-left:1%;">Back to Index</button>
         </form>
         <div align="center">
@@ -41,9 +40,6 @@
             <h2>Practical Assignment #2 - Part 1.1</h2>
             <div align="center">
                 DISCLAIMER: This code is to be used in the scope of the <em>DDSS</em> course.
-                <b>Important:</b> these sources are merely suggestions of implementations. 
-                You should modify everything you deem as necessary and be responsible for all the content that is delivered.
-                <em>The contents of this repository do not replace the proper reading of the assignment description.</em>
             </div>
             <br>
             <br>
@@ -59,7 +55,7 @@
                     <tbody>
                         <tr>
                             <td><label>Username</label></td>
-                            <td><input type="text" id="un" maxlength="32" placeholder="Enter Username" name="c_username" th:field="*{username}" required></td>
+                            <td><input  type="text" id="un" maxlength="32" placeholder="Enter Username" name="c_username" th:field="*{username}" required></td>
                         </tr>
                         <tr>
                             <td><label>Password</label> </td>

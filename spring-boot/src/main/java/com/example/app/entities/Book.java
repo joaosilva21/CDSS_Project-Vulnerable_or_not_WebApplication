@@ -8,7 +8,6 @@ import javax.persistence.Id;
 
 import javax.validation.constraints.Size;
 
-import java.lang.String;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

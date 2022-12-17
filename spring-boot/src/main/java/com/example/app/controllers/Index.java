@@ -25,8 +25,13 @@ public class Index {
         return "index";
     }
 
+    @PostMapping("/back_to_index")
+    public String back_to_index(){
+        return "redirect:/index";
+    }
+
     @PostMapping("/logout_")
-    public String logout(HttpServletResponse response) {
+    public String logout_(HttpServletResponse response) {
         Cookie user = new Cookie("user", null);
         Cookie error_index = new Cookie("error_index", null);
 
