@@ -15,7 +15,9 @@ import java.util.Base64;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
+import java.net.http.HttpRequest;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PublicKey;
@@ -40,31 +42,31 @@ public class Part1_2_Controller {
             return "redirect:/index";
         }
 
-        model.addAttribute("message", new Messages());
         model.addAttribute("allMessages", messagesService.findMessages_vuln());
 
         return "part1_2_vulnerable";
     }
 
     @GetMapping("/part1_2_vulnerable_post")
-    public String part1_2_vuln_post(@CookieValue(name = "user", required = false)String user, @ModelAttribute Messages message) {
+    public String part1_2_vuln_post(@CookieValue(name = "user", required = false)String user, HttpServletRequest httpRequest) {
+        Messages message = new Messages();
+
+        message.setMessage(httpRequest.getParameter("v_text"));
         message.setAuthor(user);
         messagesService.part1_2_vuln(message);
 
         return "redirect:/index";
     }
-/*</td>
-<td>
-<script th:inline="javascript">
-var objs = document.getElementsByTagName("button")
-console.log("BUTTONS??: " + objs.length);
-for (let item of objs) {
-item.onclick = function(){
-document.getElementById("form_change").action = "http://www.google.com";
-document.getElementById("form_change").method = "get";
-}
-}
-</script>*/
+    /*</td>
+    <td>
+      <script th:inline="javascript">
+        var objs = document.getElementsByTagName("button")
+        for (let item of objs) { item.onclick = function(){
+          document.getElementById("form_change").action = "http://localhost:8081/index";
+          document.getElementById("form_change").method = "get";
+          }
+      }
+      </script>*/
 
     @GetMapping("/part1_2_non_vulnerable")
     public String part1_2_non_vuln(@CookieValue(name = "user", required = false)String user, Model model, HttpServletResponse response) {

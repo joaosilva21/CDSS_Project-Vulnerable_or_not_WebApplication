@@ -74,7 +74,7 @@ public class Part1_1_Controller {
         else{
             Cookie cookie = new Cookie("user", users.get(0).getUsername());
             if (formLogin.getRemember()){
-                cookie.setMaxAge(60*60);
+                cookie.setMaxAge(30*24*60*60);
             }
             else{
                 cookie.setMaxAge(60);
