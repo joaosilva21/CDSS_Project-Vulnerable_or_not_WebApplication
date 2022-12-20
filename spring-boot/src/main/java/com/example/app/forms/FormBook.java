@@ -148,7 +148,7 @@ public class FormBook {
     }
 
     public void setFrom_year(Integer from_year) {
-        this.from_year = from_year == null ? -4 : from_year;
+        this.from_year = from_year == null ? Integer.valueOf(-4) : from_year;
     }
 
     public int getTo_day() {
@@ -172,7 +172,7 @@ public class FormBook {
     }
 
     public void setTo_year(Integer to_year) {
-        this.to_year = to_year == null ? -5 : to_year;
+        this.to_year = to_year == null ? Integer.valueOf(-5) : to_year;
     }
 
     public int getShow_results() {

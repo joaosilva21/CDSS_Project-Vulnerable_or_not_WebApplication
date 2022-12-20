@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 @Controller
 public class Part1_3_Controller {
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     @GetMapping("/part1_3_vulnerable")
     public String part1_3_vuln(@CookieValue(name = "user", required = false)String user,
@@ -35,6 +35,7 @@ public class Part1_3_Controller {
             Cookie error_index = new Cookie("error_index", "12");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -76,7 +77,7 @@ public class Part1_3_Controller {
             }
         }
 
-        List<Book> books = this.bookService.part1_3_vuln(formBook);
+        List<Book> books = bookService.part1_3_vuln(formBook);
         
         model.addAttribute("show_description", formBook.getShow_summaries());
         model.addAttribute("books", books);
@@ -94,6 +95,7 @@ public class Part1_3_Controller {
             Cookie error_index = new Cookie("error_index", "12");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";

@@ -37,8 +37,10 @@ public class Index {
 
         user.setSecure(true);
         user.setMaxAge(0);
+        user.setHttpOnly(true);
         error_index.setSecure(true);
         error_index.setMaxAge(0);
+        error_index.setHttpOnly(true);
 
         response.addCookie(user);
         response.addCookie(error_index);

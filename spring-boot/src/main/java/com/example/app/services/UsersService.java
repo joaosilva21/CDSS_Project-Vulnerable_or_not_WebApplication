@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -37,6 +40,8 @@ public class UsersService {
     
     @Autowired
     private EntityManager em;
+
+    private static final SecureRandom sr = new SecureRandom();
 
     public List<Object> part1_1_vuln(FormLogin formlogin){
         List<Users> users = new ArrayList<>();
@@ -91,8 +96,8 @@ public class UsersService {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, private_key);
-            formlogin.setUsername(new String(cipher.doFinal(Base64.getDecoder().decode(formlogin.getUsername()))));
-            formlogin.setPassword(new String(cipher.doFinal(Base64.getDecoder().decode(formlogin.getPassword()))));
+            formlogin.setUsername(new String(cipher.doFinal(Base64.getDecoder().decode(formlogin.getUsername())), StandardCharsets.UTF_8.name()));
+            formlogin.setPassword(new String(cipher.doFinal(Base64.getDecoder().decode(formlogin.getPassword())), StandardCharsets.UTF_8.name()));
         } 
         catch (Exception e) {
             System.out.println(e);
@@ -123,8 +128,8 @@ public class UsersService {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, private_key);
-            formRegister.setUsername(new String(cipher.doFinal(Base64.getDecoder().decode(formRegister.getUsername()))));
-            formRegister.setPassword(new String(cipher.doFinal(Base64.getDecoder().decode(formRegister.getPassword()))));
+            formRegister.setUsername(new String(cipher.doFinal(Base64.getDecoder().decode(formRegister.getUsername())), StandardCharsets.UTF_8.name()));
+            formRegister.setPassword(new String(cipher.doFinal(Base64.getDecoder().decode(formRegister.getPassword())), StandardCharsets.UTF_8.name()));
         } 
         catch (Exception e) {
             System.out.println(e);
@@ -156,20 +161,43 @@ public class UsersService {
         if(!formRegister.getPassword().matches("(.*[!#$%\\(\\)\\*+,\\.:;=?@\\[\\]\\^_\\{\\}~/].*)*")){
             return 4;
         }
+        
+        FileReader fr = null;
+        BufferedReader br = null;
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader("rockyou.txt"));
+            fr = new FileReader("rockyou.txt", Charset.forName("UTF8"));
+            br = new BufferedReader(fr);
             String line;
+
             while ((line = br.readLine()) != null) {
                 if(line.compareTo(formRegister.getPassword()) == 0){
                     return 3; 
                 }
             }
-            
-            br.close();
         }
         catch(Exception e){
             System.out.println(e);
+        }
+        finally{
+            try{
+                if(br != null){
+                    br.close();
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+                try{
+                    if(fr != null){
+                        fr.close();
+                    }
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
         }
 
         Users user = usersRepository.findUserByUsername(formRegister.getUsername());
@@ -182,7 +210,7 @@ public class UsersService {
 
     public void part1_4_non_vuln(FormRegister formRegister, String secret){
         byte[] salt_bytes = new byte[32];
-        new SecureRandom().nextBytes(salt_bytes);
+        sr.nextBytes(salt_bytes);
         String salt = Base64.getEncoder().encodeToString(salt_bytes);
 
         usersRepository.save(new Users(formRegister.getUsername(), DigestUtils.sha256Hex(formRegister.getPassword() + salt), salt, secret));

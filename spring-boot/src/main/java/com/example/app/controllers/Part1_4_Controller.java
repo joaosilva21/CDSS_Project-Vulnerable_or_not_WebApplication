@@ -38,13 +38,7 @@ import java.net.URLEncoder;
 @Controller
 public class Part1_4_Controller {
     @Autowired
-    UsersService usersService;
-
-    @Autowired
-    MessagesService messagesService;
-
-    @Autowired
-    BookService bookService;
+    private UsersService usersService;
 
     private PublicKey public_key;
     private PrivateKey private_key;
@@ -55,6 +49,7 @@ public class Part1_4_Controller {
             Cookie error_index = new Cookie("error_index", "11");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -78,8 +73,6 @@ public class Part1_4_Controller {
             if(line != null){
                 return "redirect:/part1_4_vulnerable?error=Weak Password";
             }
-            
-            in.close();
         }
         catch(Exception e){
             System.out.println(e);
@@ -98,6 +91,7 @@ public class Part1_4_Controller {
             Cookie error_index = new Cookie("error_index", "11");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -118,17 +112,18 @@ public class Part1_4_Controller {
         }
 
         model.addAttribute("formregister", new FormRegister());
-        model.addAttribute("mykey", new String(Base64.getEncoder().encodeToString(this.public_key.getEncoded())));
+        model.addAttribute("mykey", String.valueOf(Base64.getEncoder().encodeToString(this.public_key.getEncoded())));
 
         return "part1_4_non_vulnerable";
     }
 
     @PostMapping("/part1_4_non_vulnerable_post")
     public ModelAndView part1_4_non_vuln_post(@ModelAttribute FormRegister formRegister, HttpServletResponse response, RedirectAttributes model){
-        int error_value = usersService.part1_4_non_vuln_verify(formRegister, this.private_key);
+        int error_value = this.usersService.part1_4_non_vuln_verify(formRegister, this.private_key);
         Cookie error = new Cookie("error", String.valueOf(error_value));
         error.setSecure(true);
         error.setMaxAge(1);
+        error.setHttpOnly(true);
         response.addCookie(error);
 
         if(error_value != 0){
@@ -154,6 +149,7 @@ public class Part1_4_Controller {
             Cookie error_index = new Cookie("error_index", "13");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -163,12 +159,12 @@ public class Part1_4_Controller {
             model.addAttribute("error_register", error_register);
         }
 
-        String secret = OTP.randomBase32(20); //this.usersService.findQRCodeByUsername(formRegister.getUsername());
+        String secret = OTP.randomBase32(20); 
         String otpUrl = OTP.getURL(secret, 6, Type.TOTP, "spring-boot-2fa-demo", formRegister.getUsername());
 
         String twoFaQrUrl = String.format(
             "https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=%s",
-            URLEncoder.encode(otpUrl, "UTF-8")); // "UTF-8" shouldn't be unsupported but it's a checked exception :(
+            URLEncoder.encode(otpUrl, "UTF-8"));
 
         model.addAttribute("twoFaQrUrl", twoFaQrUrl);
         model.addAttribute("formqrcode", new FormQRcode(secret));
@@ -185,12 +181,13 @@ public class Part1_4_Controller {
             Cookie error_register = new Cookie("error_register", "21");
             error_register.setSecure(true);
             error_register.setMaxAge(1);
+            error_register.setHttpOnly(true);
             response.addCookie(error_register);
             
             return new ModelAndView("redirect:/qrcode");
         }
 
-        usersService.part1_4_non_vuln(formRegister, formQRcode.getQrcode());
+        this.usersService.part1_4_non_vuln(formRegister, formQRcode.getQrcode());
 
         return new ModelAndView("redirect:/index");
     }

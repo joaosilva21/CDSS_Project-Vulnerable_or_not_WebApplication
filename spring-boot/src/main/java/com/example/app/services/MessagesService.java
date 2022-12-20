@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.security.PrivateKey;
-
 import javax.crypto.Cipher;
 
 @Service
@@ -50,7 +51,7 @@ public class MessagesService {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, private_key);
-            message.setMessage(new String(cipher.doFinal(Base64.getDecoder().decode(message.getMessage()))));
+            message.setMessage(new String(cipher.doFinal(Base64.getDecoder().decode(message.getMessage())), StandardCharsets.UTF_8.name()));
         } 
         catch (Exception e) {
             System.out.println(e);

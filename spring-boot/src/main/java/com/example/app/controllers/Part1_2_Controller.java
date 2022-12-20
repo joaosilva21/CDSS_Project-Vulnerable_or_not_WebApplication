@@ -26,7 +26,7 @@ import java.security.PrivateKey;
 @Controller
 public class Part1_2_Controller {
     @Autowired
-    MessagesService messagesService;
+    private MessagesService messagesService;
 
     private PublicKey public_key;
     private PrivateKey private_key;
@@ -37,6 +37,7 @@ public class Part1_2_Controller {
             Cookie error_index = new Cookie("error_index", "12");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -74,6 +75,7 @@ public class Part1_2_Controller {
             Cookie error_index = new Cookie("error_index", "12");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -92,7 +94,7 @@ public class Part1_2_Controller {
             System.out.println(e);
         }
 
-        model.addAttribute("mykey", new String(Base64.getEncoder().encodeToString(this.public_key.getEncoded())));
+        model.addAttribute("mykey", String.valueOf(Base64.getEncoder().encodeToString(this.public_key.getEncoded())));
 
         return "part1_2_non_vulnerable";
     }

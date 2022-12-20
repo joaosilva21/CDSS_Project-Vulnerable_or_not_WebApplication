@@ -33,7 +33,7 @@ import java.io.IOException;
 @Controller
 public class Part1_1_Controller {
     @Autowired
-    UsersService usersService;
+    private UsersService usersService;
 
     private PublicKey public_key;
     private PrivateKey private_key;
@@ -45,6 +45,7 @@ public class Part1_1_Controller {
             Cookie error_index = new Cookie("error_index", "11");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -72,14 +73,17 @@ public class Part1_1_Controller {
 
         }
         else{
-            Cookie cookie = new Cookie("user", users.get(0).getUsername());
+            Cookie user = new Cookie("user", users.get(0).getUsername());
+            //user.setSecure(true);
+            user.setHttpOnly(true);
+
             if (formLogin.getRemember()){
-                cookie.setMaxAge(30*24*60*60);
+                user.setMaxAge(30*24*60*60);
             }
             else{
-                cookie.setMaxAge(60);
+                user.setMaxAge(60);
             }
-            response.addCookie(cookie);
+            response.addCookie(user);
             return "redirect:/index";
         }
      
@@ -91,6 +95,7 @@ public class Part1_1_Controller {
             Cookie error_index = new Cookie("error_index", "11");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
+            error_index.setHttpOnly(true);
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -111,18 +116,20 @@ public class Part1_1_Controller {
         }
 
         model.addAttribute("formlogin", new FormLogin());
-        model.addAttribute("mykey", new String(Base64.getEncoder().encodeToString(this.public_key.getEncoded())));
+        model.addAttribute("mykey", String.valueOf(Base64.getEncoder().encodeToString(this.public_key.getEncoded())));
        
         return "part1_1_non_vulnerable";
     }
 
     @PostMapping("/part1_1_non_vulnerable_post")
     public String part1_1_non_vuln_post(@ModelAttribute FormLogin formlogin, RedirectAttributes model, HttpServletResponse response) throws InvalidKeyException, IllegalArgumentException, NoSuchAlgorithmException, IOException{
-        if(usersService.part1_1_non_vuln(formlogin, this.private_key)){
+        if(this.usersService.part1_1_non_vuln(formlogin, this.private_key)){
             Cookie error = new Cookie("error", "0");        
             Cookie user = new Cookie("user", formlogin.getUsername());
             error.setSecure(true);
+            error.setHttpOnly(true);
             user.setSecure(true);
+            user.setHttpOnly(true);
 
             if(formlogin.getRemember()){            
                 user.setMaxAge(60*60);
@@ -140,6 +147,7 @@ public class Part1_1_Controller {
         Cookie error = new Cookie("error", "1");
         error.setSecure(true);
         error.setMaxAge(1);
+        error.setHttpOnly(true);
         response.addCookie(error);
 
         return "redirect:/part1_1_non_vulnerable";
