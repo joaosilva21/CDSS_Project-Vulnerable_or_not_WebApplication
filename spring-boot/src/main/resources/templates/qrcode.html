@@ -60,6 +60,9 @@
             <br>
             <div style="color:red">
                 <td th:if="${error_register == '21'}">
+                    Bad Request - Missing fields<br><br>
+                </td>
+                <td th:if="${error_register == '22'}">
                     Invalid QRCode introduced<br><br>
                 </td>
             </div>

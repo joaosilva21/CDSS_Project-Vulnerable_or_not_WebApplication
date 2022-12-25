@@ -275,6 +275,49 @@
                             </tbody>
                         </table>
                     </form> 
+                    <br>
+
+                    <div style="color:red">
+                        <td th:if="${error == '-1'}">
+                            Bad Request - Missing fields<br><br>
+                        </td>
+                        <td th:if="${error == '-2'}">
+                            Bad Search - Invalid value introduced on field price more<br><br>
+                        </td>
+                        <td th:if="${error == '-3'}">
+                            Bad Search - Invalid value introduced on field price less<br><br>
+                        </td>
+                        <td th:if="${error == '-45'}">
+                            Bad Search - Invalid format custom date<br><br>
+                        </td>
+                        <td th:if="${error == '-4'}">
+                            Bad Search - Invalid format from_date<br><br>
+                        </td>
+                        <td th:if="${error == '-5'}">
+                            Bad Search - Invalid format to_date<br><br>
+                        </td>
+                        <td th:if="${error == '-6'}">
+                            Bad Search - Invalid format show_results<br><br>
+                        </td>
+                        <td th:if="${error == '-7'}">
+                            Bad Search - Invalid format show_summaries<br><br>
+                        </td>
+                        <td th:if="${error == '-8'}">
+                            Bad Search - Invalid format category<br><br>
+                        </td>
+                        <td th:if="${error == '-9'}">
+                            Bad Search - Invalid format match<br><br>
+                        </td>
+                        <td th:if="${error == '-10'}">
+                            Bad Search - Invalid format within<br><br>
+                        </td>
+                        <td th:if="${error == '-11'}">
+                            Bad Search - Invalid format sort_by<br><br>
+                        </td>
+                        <td th:if="${error == '-12'}">
+                            Bad Search - Invalid format search_for<br><br>
+                        </td>
+                    </div>
                 </div>
                 
                 <br><br>
@@ -304,7 +347,7 @@
                                 <td th:text="${b.notes}"></td>
                                 <td th:text="${b.keywords}"></td>
                                 <td th:text="${b.price}"></td>
-                                <td th:if="${show_description}">
+                                <td th:if="${show_description == '1'}">
                                     <button th:data-parameter1="${b.description}" 
                                             onclick="popup(this.getAttribute('data-parameter1'));">
                                             Show

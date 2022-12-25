@@ -39,6 +39,7 @@
                 function input(e) {
                     document.getElementById("un").value = encryptWithRSA(document.getElementById("un").value);
                     document.getElementById("pw").value = encryptWithRSA(document.getElementById("pw").value);
+                    document.getElementById("pw2").value = encryptWithRSA(document.getElementById("pw2").value);
                 }
             </script>
 
@@ -60,6 +61,10 @@
                             <td><input id="pw" type="password" maxlength="512" placeholder="Enter Password" name="v_password" th:field="*{password}" required> </td>
                         </tr>
                         <tr>
+                            <td><label>Confirm password</label> </td>
+                            <td><input id="pw2" type="password" maxlength="512" placeholder="Enter Password" name="v_password" th:field="*{confirm_password}" required> </td>
+                        </tr>
+                        <tr>
                             <td align="right" colspan="2"><button type="submit">Register</button></td>
                         </tr>
                     </tbody>
@@ -67,6 +72,9 @@
             </form>
             <br> 
             <div style="color:red">
+                <td th:if="${error == '1'}">
+                    Bad Request - Missing fields
+                </td>
                 <td th:if="${error == '2'}">
                     User already exists
                 </td>
@@ -90,6 +98,9 @@
                 </td>
                 <td th:if="${error == '9'}">
                     You introduced some special characters that are not allowed 
+                </td>
+                <td th:if="${error == '10'}">
+                    Passwords don't match 
                 </td>
             </div>
         </div>

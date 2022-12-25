@@ -78,6 +78,9 @@
             <br>
             <div style="color:red">
                 <td th:if="${error == '1'}">
+                    Bad Request - Missing fields<br><br>
+                </td>
+                <td th:if="${error == '2'}">
                     Invalid Credentials<br><br>
                 </td>
             </div>

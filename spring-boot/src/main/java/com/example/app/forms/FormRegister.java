@@ -3,6 +3,7 @@ package com.example.app.forms;
 public class FormRegister {
     private String username;
     private String password;
+    private String confirm_password;
 
     public FormRegister() {
         
@@ -21,5 +22,11 @@ public class FormRegister {
         this.password = password;
     }
 
-    
+    public String getConfirm_password() {
+        return confirm_password;
+    }
+
+    public void setConfirm_password(String confirm_password) {
+        this.confirm_password = confirm_password;
+    }
 }

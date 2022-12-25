@@ -46,6 +46,8 @@ public class Part1_1_Controller {
             error_index.setSecure(true);
             error_index.setMaxAge(1);
             error_index.setHttpOnly(true);
+            error_index.setDomain("localhost");
+            error_index.setPath("/index");
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -74,8 +76,9 @@ public class Part1_1_Controller {
         }
         else{
             Cookie user = new Cookie("user", users.get(0).getUsername());
-            //user.setSecure(true);
+            user.setSecure(true);
             user.setHttpOnly(true);
+            user.setDomain("localhost");
 
             if (formLogin.getRemember()){
                 user.setMaxAge(30*24*60*60);
@@ -90,12 +93,14 @@ public class Part1_1_Controller {
     }
 
     @GetMapping("/part1_1_non_vulnerable")
-    public String part1_1_non_vuln(@CookieValue(name = "error", required = false) String error, @CookieValue(name = "user", required = false) String user, Model model, HttpServletResponse response) {        
+    public String part1_1_non_vuln(@CookieValue(name = "error_login", required = false) String error, @CookieValue(name = "user", required = false) String user, Model model, HttpServletResponse response) {        
         if(user != null){
             Cookie error_index = new Cookie("error_index", "11");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
             error_index.setHttpOnly(true);
+            error_index.setDomain("localhost"); 
+            error_index.setPath("/index"); 
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -123,32 +128,42 @@ public class Part1_1_Controller {
 
     @PostMapping("/part1_1_non_vulnerable_post")
     public String part1_1_non_vuln_post(@ModelAttribute FormLogin formlogin, RedirectAttributes model, HttpServletResponse response) throws InvalidKeyException, IllegalArgumentException, NoSuchAlgorithmException, IOException{
-        if(this.usersService.part1_1_non_vuln(formlogin, this.private_key)){
-            Cookie error = new Cookie("error", "0");        
-            Cookie user = new Cookie("user", formlogin.getUsername());
+        if(formlogin.getUsername() == null || formlogin.getPassword() == null || formlogin.getQrcode() == null){
+            Cookie error = new Cookie("error_login", "1");
             error.setSecure(true);
+            error.setMaxAge(1);
             error.setHttpOnly(true);
-            user.setSecure(true);
-            user.setHttpOnly(true);
-
-            if(formlogin.getRemember()){            
-                user.setMaxAge(60*60);
-            }
-            else{            
-                user.setMaxAge(60);
-            }
-
+            error.setDomain("localhost");
+            error.setPath("/part1_1_non_vulnerable");
             response.addCookie(error);
-            response.addCookie(user);
-
-            return "redirect:/index";
         }
-
-        Cookie error = new Cookie("error", "1");
-        error.setSecure(true);
-        error.setMaxAge(1);
-        error.setHttpOnly(true);
-        response.addCookie(error);
+        else{
+            if(this.usersService.part1_1_non_vuln(formlogin, this.private_key)){  
+                Cookie user = new Cookie("user", formlogin.getUsername());
+                user.setSecure(true);
+                user.setHttpOnly(true);
+                user.setDomain("localhost"); 
+    
+                if(formlogin.getRemember()){            
+                    user.setMaxAge(60*60);
+                }
+                else{            
+                    user.setMaxAge(60);
+                }
+    
+                response.addCookie(user);
+    
+                return "redirect:/index";
+            }
+    
+            Cookie error = new Cookie("error_login", "2");
+            error.setSecure(true);
+            error.setMaxAge(1);
+            error.setHttpOnly(true);
+            error.setDomain("localhost");
+            error.setPath("/part1_1_non_vulnerable");
+            response.addCookie(error);
+        }
 
         return "redirect:/part1_1_non_vulnerable";
     }

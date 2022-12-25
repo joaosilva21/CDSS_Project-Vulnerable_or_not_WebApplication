@@ -38,6 +38,8 @@ public class Part1_2_Controller {
             error_index.setSecure(true);
             error_index.setMaxAge(1);
             error_index.setHttpOnly(true);
+            error_index.setDomain("localhost");
+            error_index.setPath("/index");
             response.addCookie(error_index);
 
             return "redirect:/index";
@@ -70,15 +72,23 @@ public class Part1_2_Controller {
       </script>*/
 
     @GetMapping("/part1_2_non_vulnerable")
-    public String part1_2_non_vuln(@CookieValue(name = "user", required = false)String user, Model model, HttpServletResponse response) {
+    public String part1_2_non_vuln(@CookieValue(name = "error_message", required = false) String error,
+                                   @CookieValue(name = "user", required = false)String user, 
+                                   Model model, HttpServletResponse response) {
         if(user == null){
             Cookie error_index = new Cookie("error_index", "12");
             error_index.setSecure(true);
             error_index.setMaxAge(1);
             error_index.setHttpOnly(true);
+            error_index.setDomain("localhost:8080");
+            error_index.setPath("/index");
             response.addCookie(error_index);
 
             return "redirect:/index";
+        }
+
+        if(error != null){
+            model.addAttribute("error", error);
         }
 
         model.addAttribute("message", new Messages());
@@ -100,10 +110,21 @@ public class Part1_2_Controller {
     }
 
     @PostMapping("/part1_2_non_vulnerable_post")
-    public String part1_2_non_vuln_post(@CookieValue(name = "user", required = false)String user, @ModelAttribute Messages message){
-        message.setAuthor(user);
-        this.messagesService.part1_2_non_vuln(message, this.private_key);
+    public String part1_2_non_vuln_post(@CookieValue(name = "user", required = false)String user, @ModelAttribute Messages message, HttpServletResponse response){
+        if(message.getMessage() == null){
+            Cookie error = new Cookie("error_message", "1");  
+            error.setSecure(true);
+            error.setMaxAge(1);
+            error.setHttpOnly(true);
+            error.setDomain("localhost");
+            error.setPath("/part1_2_non_vulnerable"); 
+            response.addCookie(error);
+        }
+        else{ 
+            message.setAuthor(user);
+            this.messagesService.part1_2_non_vuln(message, this.private_key);
+        }
         
-        return "redirect:index";
+        return "redirect:part1_2_non_vulnerable";
     }
 }

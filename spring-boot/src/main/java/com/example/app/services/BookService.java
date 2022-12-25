@@ -144,8 +144,6 @@ public class BookService {
     public List<Book> part1_3_non_vuln(FormBook formBook){
         Boolean adv_title = false, adv_authors = false, adv_description = false, adv_keywords = false, adv_notes = false;
         LocalDate date_more = LocalDate.now(), date_less = LocalDate.now();
-
-        formBook.setSearch_for(formBook.getSearch_for().replaceAll("[\\(\\)<>\0|&\"';\\\\-]", ""));
 		
 		if(formBook.getSearch_for().compareTo("") == 0){
             formBook.setSearch_for(" ");
@@ -188,8 +186,8 @@ public class BookService {
 		return this.bookRepository.searchBooks_non_vuln(formBook.getTitle(), formBook.getTitle().compareTo("") == 0, 
                                                formBook.getAuthors(), formBook.getAuthors().compareTo("") == 0, 
                                                formBook.getCategory(), formBook.getCategory().compareTo("All") == 0, 
-                                               formBook.getPrice_less() , formBook.getPrice_less() == null || formBook.getPrice_less().compareTo(new BigDecimal(0)) == 0, 
-                                               formBook.getPrice_more(), formBook.getPrice_more() == null || formBook.getPrice_more().compareTo(new BigDecimal(0)) == 0,
+                                               formBook.getPrice_less() , formBook.getPrice_less() == null || formBook.getPrice_less().compareTo(new BigDecimal(-1)) == 0, 
+                                               formBook.getPrice_more(), formBook.getPrice_more() == null || formBook.getPrice_more().compareTo(new BigDecimal(-1)) == 0,
                                                formBook.getSearch_for(),
                                                adv_title, adv_authors, adv_description, adv_keywords, adv_notes,
                                                formBook.getMatch(), 

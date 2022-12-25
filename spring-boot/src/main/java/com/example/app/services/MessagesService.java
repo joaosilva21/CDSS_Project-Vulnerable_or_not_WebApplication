@@ -57,7 +57,7 @@ public class MessagesService {
             System.out.println(e);
         }
 
-        message.setMessage(message.getMessage().replaceAll("[<>\0|&\"';\\\\-]", ""));
+        message.setMessage(message.getMessage().replaceAll("[<>&\"'\\\\]", ""));
 
         messagesRepository.save(message);
     }

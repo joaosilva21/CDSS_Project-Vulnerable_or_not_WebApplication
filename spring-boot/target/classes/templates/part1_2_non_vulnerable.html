@@ -59,10 +59,16 @@
                         </tr>
                     </tbody>
                 </table>
-            </form> 
+            </form>
 
-            <br>
-            <br>
+            <div style="color:red">
+                <td th:if="${error == '1'}">
+                    <br>Bad Request - Missing fields<br><br>
+                </td>
+                <td th:if="${error != '1'}">
+                    <br><br>
+                </td>
+            </div>
 
             <table  style="width: 500px; background-color:#f19191" border="1" cellpadding="1" >
                 <thead>

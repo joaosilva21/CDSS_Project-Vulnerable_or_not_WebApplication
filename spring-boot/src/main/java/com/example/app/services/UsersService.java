@@ -62,6 +62,7 @@ public class UsersService {
         }
         
         String sql_login = "SELECT * FROM users WHERE username = '" + formlogin.getUsername() + "' AND password = '" + DigestUtils.sha256Hex(formlogin.getPassword() + salts.get(0)) + "'";
+        System.out.println(sql_login);
         Query query_login = em.createNativeQuery(sql_login);
         List<Object[]> o_login = query_login.getResultList();
         for(Object[]  obj : o_login){
@@ -103,9 +104,7 @@ public class UsersService {
             System.out.println(e);
         }
 
-        if(formlogin.getPassword().matches("^.*[<>\0|&\"';\\\\-]+.*$") 
-            || formlogin.getUsername().matches("^.*[<>\0|&\"';\\\\-]+.*$")
-            || formlogin.getQrcode().matches("^.*[<>\0|&\"';\\\\-]+.*$")){
+        if(!formlogin.getUsername().matches("^.*[a-zA-Z0-9_]+.*$")){
             return false;   
         }
 
@@ -130,14 +129,13 @@ public class UsersService {
             cipher.init(Cipher.DECRYPT_MODE, private_key);
             formRegister.setUsername(new String(cipher.doFinal(Base64.getDecoder().decode(formRegister.getUsername())), StandardCharsets.UTF_8.name()));
             formRegister.setPassword(new String(cipher.doFinal(Base64.getDecoder().decode(formRegister.getPassword())), StandardCharsets.UTF_8.name()));
+            formRegister.setConfirm_password(new String(cipher.doFinal(Base64.getDecoder().decode(formRegister.getConfirm_password())), StandardCharsets.UTF_8.name()));
         } 
         catch (Exception e) {
             System.out.println(e);
         }
-
         
-        if(formRegister.getPassword().matches("^.*[<>\0|&\"';\\\\-]+.*$") ||
-           formRegister.getUsername().matches("^.*[<>\0|&\"';\\\\-]+.*$")){
+        if(!formRegister.getUsername().matches("^.*[a-zA-Z0-9_]+.*$")){
             return 9;
         }
 
@@ -158,7 +156,7 @@ public class UsersService {
             return 5;
         }
 
-        if(!formRegister.getPassword().matches("(.*[!#$%\\(\\)\\*+,\\.:;=?@\\[\\]\\^_\\{\\}~/].*)*")){
+        if(!formRegister.getPassword().matches("(.*[!#$%\\(\\)\\*+,\\.:;=?@\\[\\]\\^_\\{\\}~/<>\0|&\"';\\\\-].*)*")){
             return 4;
         }
         
@@ -221,4 +219,3 @@ public class UsersService {
     }
 
 }
-
