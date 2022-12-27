@@ -71,7 +71,7 @@ public class Part1_4_Controller {
         System.out.println(command);
         
         try{
-            BufferedReader in = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(command).getInputStream()));
+            BufferedReader in =new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(new String[]{ "/bin/sh", "-c", command }).getInputStream()));
             String line = in.readLine();
             if(line != null){
                 System.out.println(line);
