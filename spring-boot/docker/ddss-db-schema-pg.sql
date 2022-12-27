@@ -3,7 +3,7 @@ insert into book (title, authors, category, price, book_date, keywords, notes, r
        values('Web Database Development : Step by Step', 'Jim Buyens', 'Databases',  39.99, '2007-01-01 12:00:00', 'Web; persistence; sql', 'This is a very nice book.', 10,
             'As Web sites continue to grow in complexity and in the volume of data they must present, databases increasingly drive their content. WEB DATABASE DEVELOPMENT FUNDAMENTALS is ideal for the beginning-to-intermediate Web developer, departmental power user, or entrepreneur who wants to step up to a database-driven Web site-without buying several in-depth guides to the different technologies involved. This book uses the clear Microsoft(r) Step by Step tutorial method to familiarize developers with the technologies for building smart Web sites that present data more easily. ');
 
-
+ 
 insert into book (title, authors, category, price, book_date, keywords, notes, recomendation,
                    description)
        values('Programming Perl (3rd Edition)', 'Larry Wall, Tom Christiansen, Jon Orwant', 'Programming',  39.96, '2009-12-01 12:00:00', 'Perrl; scripts; code', 'This is a very nice book.', 9, 
