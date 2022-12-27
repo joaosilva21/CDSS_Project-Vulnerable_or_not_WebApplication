@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Base64;
 
@@ -32,7 +33,7 @@ public class Part1_2_Controller {
     private PrivateKey private_key;
 
     @GetMapping("/part1_2_vulnerable")
-    public String part1_2_vuln(@CookieValue(name = "user", required = false)String user, Model model, HttpServletResponse response) {
+    public String part1_2_vuln(@CookieValue(name = "user", required = false)String user,  @RequestParam(name = "error", required = false) String error, Model model, HttpServletResponse response) {
         if(user == null){
             Cookie error_index = new Cookie("error_index", "12");
             error_index.setSecure(true);
@@ -45,6 +46,10 @@ public class Part1_2_Controller {
             return "redirect:/index";
         }
 
+        if(error != null){
+            model.addAttribute("error", error);
+        }
+
         model.addAttribute("allMessages", messagesService.findMessages_vuln());
 
         return "part1_2_vulnerable";
@@ -55,10 +60,14 @@ public class Part1_2_Controller {
         Messages message = new Messages();
 
         message.setMessage(httpRequest.getParameter("v_text"));
+        if(message.getMessage() == null){
+            return "redirect:/part1_2_vulnerable?error=An error ocorred";
+        }
+
         message.setAuthor(user);
         messagesService.part1_2_vuln(message);
 
-        return "redirect:/index";
+        return "redirect:/part1_2_vulnerable";
     }
     /*</td>
     <td>
@@ -80,7 +89,7 @@ public class Part1_2_Controller {
             error_index.setSecure(true);
             error_index.setMaxAge(1);
             error_index.setHttpOnly(true);
-            error_index.setDomain("localhost:8080");
+            error_index.setDomain("localhost");
             error_index.setPath("/index");
             response.addCookie(error_index);
 

@@ -67,12 +67,14 @@ public class Part1_4_Controller {
 
     @GetMapping("/part1_4_vulnerable_post")
     public String part1_4_vuln_post(@ModelAttribute FormRegister formRegister){
-        String command = "cmd.exe /c findstr /m \"" + formRegister.getPassword() + "\" rockyou.txt";
+        String command =  "grep " + formRegister.getPassword() + " rockyou.txt";
+        System.out.println(command);
         
         try{
             BufferedReader in = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(command).getInputStream()));
             String line = in.readLine();
             if(line != null){
+                System.out.println(line);
                 return "redirect:/part1_4_vulnerable?error=Weak Password";
             }
         }

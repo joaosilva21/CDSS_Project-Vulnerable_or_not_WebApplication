@@ -62,7 +62,6 @@ public class UsersService {
         }
         
         String sql_login = "SELECT * FROM users WHERE username = '" + formlogin.getUsername() + "' AND password = '" + DigestUtils.sha256Hex(formlogin.getPassword() + salts.get(0)) + "'";
-        System.out.println(sql_login);
         Query query_login = em.createNativeQuery(sql_login);
         List<Object[]> o_login = query_login.getResultList();
         for(Object[]  obj : o_login){

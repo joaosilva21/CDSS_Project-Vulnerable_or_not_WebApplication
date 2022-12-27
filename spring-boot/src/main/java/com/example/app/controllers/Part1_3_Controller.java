@@ -43,7 +43,8 @@ public class Part1_3_Controller {
     @GetMapping("/part1_3_vulnerable")
     public String part1_3_vuln(@CookieValue(name = "user", required = false)String user,
                                 @RequestParam(name = "books", required = false)List<Book> books, 
-                                @RequestParam(name = "show_description", required = false) Boolean show_description, 
+                                @RequestParam(name = "show_description", required = false) Boolean show_description,
+                                @RequestParam(name = "error", required = false) String error, 
                                 Model model, HttpServletResponse response) {
         if(user == null){
             Cookie error_index = new Cookie("error_index", "12");
@@ -57,7 +58,10 @@ public class Part1_3_Controller {
             return "redirect:/index";
         }
 
-        
+        if(error != null){
+            model.addAttribute("error", error);
+        }
+
         model.addAttribute("formbook", new FormBook());
         model.addAttribute("show_description", show_description);
                             
@@ -70,7 +74,12 @@ public class Part1_3_Controller {
     }
     
     @GetMapping("/part1_3_vulnerable_post")
-    public String part1_3_vuln_post(@ModelAttribute FormBook formBook, RedirectAttributes model){
+    public String part1_3_vuln_post(@ModelAttribute FormBook formBook, RedirectAttributes model) throws IllegalAccessException{
+        int error_book;
+        if((error_book = verifyInputs(formBook)) < 0){
+            return "redirect:/part1_3_vulnerable?error=An error ocorred";
+        }
+
         List<Book> books = bookService.part1_3_vuln(formBook);
         
         model.addAttribute("show_description", formBook.getShow_summaries());

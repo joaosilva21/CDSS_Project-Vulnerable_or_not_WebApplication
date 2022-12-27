@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>DDSS PA2 - Part 1.4</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    </head>
+    <body>
+        <form th:action="@{/back_to_index}" method="post" >
+            <button type="submit" style="position:absolute; top:0; left:0; margin-top:1%; margin-left:1%;">Back to Index</button>
+        </form>
+        <div align="center">
+
+            <h1>Design and Development of Secure Software</h1>
+            <h2>Practical Assignment #2 - Part 1.4</h2>
+            <div align="center">
+                DISCLAIMER: This code is to be used in the scope of the <em>DDSS</em> course.
+            </div>
+            <br>
+            <br>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js" type="text/javascript"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js" async></script>
+            
+            <script th:inline="javascript">
+                var mykey = [[${mykey}]];
+            </script> 
+            <script>
+                const encryptWithRSA = (text) => {
+                    var rsa = new JSEncrypt();
+                    rsa.setPublicKey(mykey);
+
+                    return rsa.encrypt(text);
+                };
+
+                function input(e) {
+                    document.getElementById("un").value = encryptWithRSA(document.getElementById("un").value);
+                    document.getElementById("pw").value = encryptWithRSA(document.getElementById("pw").value);
+                    document.getElementById("pw2").value = encryptWithRSA(document.getElementById("pw2").value);
+                }
+            </script>
+
+
+            <form autocomplete="off" th:action="@{/part1_4_non_vulnerable_post}" th:object="${formregister}" method="post" onsubmit="input(event)">
+                <table  border="1" cellpadding="1" style="width: 300px; background-color:   #f19191">
+                    <thead>
+                        <tr>
+                            <th colspan="2"><b>Part 4.1 - Correct Form</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><label>Username</label></td>
+                            <td><input id="un" type="text" maxlength="32" placeholder="Enter Username" name="v_username" th:field="*{username}" required></td>
+                        </tr>
+                        <tr>
+                            <td><label>Password</label> </td>
+                            <td><input id="pw" type="password" maxlength="512" placeholder="Enter Password" name="v_password" th:field="*{password}" required> </td>
+                        </tr>
+                        <tr>
+                            <td><label>Confirm password</label> </td>
+                            <td><input id="pw2" type="password" maxlength="512" placeholder="Enter Password" name="v_password" th:field="*{confirm_password}" required> </td>
+                        </tr>
+                        <tr>
+                            <td align="right" colspan="2"><button type="submit">Register</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <br> 
+            <div style="color:red">
+                <td th:if="${error == '1'}">
+                    Bad Request - Missing fields
+                </td>
+                <td th:if="${error == '2'}">
+                    User already exists
+                </td>
+                <td th:if="${error == '3'}">
+                    Weak password - Password commonly used
+                </td>
+                <td th:if="${error == '4'}">
+                    Weak password - Password don't contain special characters
+                </td>
+                <td th:if="${error == '5'}">
+                    Weak password - Password must have at least 8 characters
+                </td>
+                <td th:if="${error == '6'}">
+                    Weak password - Password must contain upper and lower case chracters
+                </td>
+                <td th:if="${error == '7'}">
+                    Weak password - Password must contain at least a number
+                </td>
+                <td th:if="${error == '8'}">
+                    Username and password must be different from each other
+                </td>
+                <td th:if="${error == '9'}">
+                    You introduced some special characters that are not allowed 
+                </td>
+                <td th:if="${error == '10'}">
+                    Passwords don't match 
+                </td>
+            </div>
+        </div>
+    </body>
+</html>
