@@ -23,24 +23,24 @@ Consists in develop a webapplication and some functionalities, each functionalit
 3. [Maven](https://maven.apache.org/download.cgi) (1st way to run)
 4. Thymeleaf
 5. [PgAdmin](https://www.pgadmin.org/download/) (1st way to run)
-6. Docker (2nd way to run)
+6. [Docker](https://www.docker.com/products/docker-desktop/) (2nd way to run)
 
 ## To run this project:
 You have two ways to run this project:
 1. Download the folder "#spring-boot_folder" and unzip the "Project.zip" after have Docker installed:
    * Enter in the "docker" folder and run command to generate for the first time a Docker container
-   ```shellscript
-    [your-disk]:[name-path]\docker> docker-compose up
-    ```
+     ```shellscript
+     [your-disk]:[name-path]\docker> docker-compose up
+     ```
    * From this moment now you have container created running, next time you want to run the container you can simply start it in Docker
-   ![image](https://i.imgur.com/TZLhj6I.png)
+     ![image](https://i.imgur.com/TZLhj6I.png)
 
 2. Download the folder "#spring-boot_folder" and unzip the "Project.zip" after have Java and Maven installed:
    * Create a database with name "ScoreDei"<br>
-   ![image](https://i.imgur.com/NAsDm2g.png)
-   ![image](https://i.imgur.com/HlNLZM8.png)
+     ![image](https://i.imgur.com/NAsDm2g.png)
+     ![image](https://i.imgur.com/HlNLZM8.png)
    * Configure your connection to the database changing some fields in application.properties file
-   ![image](https://i.imgur.com/niv9ysU.png)
+     ![image](https://i.imgur.com/niv9ysU.png)
 
      NOTE: this file is in following directory: [your directory]/src/main/resources
    * Finally just run it
@@ -62,6 +62,7 @@ You have two ways to run this project:
   [your-disk]:[name-path]> mvnw clean package -DskipTests
   ```
   Then go to the "target" folder and copy the file "demo-0.0.1-SNAPSHOT.jar" file to the "docker" folder
+- This project was imported from other repository, so the github-classroom[bot] is from there too
 
 ## Authors:
 - [João Silva](https://github.com/joaosilva21)
