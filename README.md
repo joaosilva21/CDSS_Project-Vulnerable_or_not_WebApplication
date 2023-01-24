@@ -41,14 +41,14 @@ You have two ways to run this project:
    ![image](https://i.imgur.com/HlNLZM8.png)
    * Configure your connection to the database changing some fields in application.properties file
    ![image](https://i.imgur.com/niv9ysU.png)
-   
-   NOTE: this file is in following directory: [your directory]/src/main/resources
+
+     NOTE: this file is in following directory: [your directory]/src/main/resources
    * Finally just run it
-    ```shellscript
-    [your-disk]:[name-path]> mvnw spring-boot:run
-    ```
-    * Access the website:
-    ![image](https://i.imgur.com/eYKv7tA.png)
+     ```shellscript
+     [your-disk]:[name-path]> mvnw spring-boot:run
+     ```
+   * Access the website<br>
+     ![image](https://i.imgur.com/eYKv7tA.png)
 
 ## Notes important to read
 - For more information about the project, end-points and how exploits work read the Report
