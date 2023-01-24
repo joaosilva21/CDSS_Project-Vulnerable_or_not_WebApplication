@@ -9,7 +9,8 @@
 - [Authors](#authors)
 
 ## Description
-This project was developed for Design and Development of Secure Software subject @University of Coimbra, Informatics Security <br>
+This project was developed for Distributed Systems subject @University of Coimbra, Informatics Engineering <br>
+Consists in develop a program that will host a "website" to see info about football games using Thymeleaf, Spring-boot, JPA queries and others elements.
 
 #### Main Languages:
 ![](https://img.shields.io/badge/Java-333333?style=flat&logo=java&logoColor=FFFFFF) 
@@ -38,4 +39,3 @@ Download the folder "spring-boot" after have Docker installed
 
 ## Authors:
 - [Inês Marçal](https://github.com/inesmarcal)
-- [João Silva](https://github.com/joaosilva21)
