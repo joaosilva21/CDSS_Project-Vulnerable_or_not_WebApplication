@@ -38,3 +38,4 @@ Download the folder "spring-boot" after have Docker installed
 
 ## Authors:
 - [Inês Marçal](https://github.com/inesmarcal)
+- [João Silva](https://github.com/joaosilva21)
