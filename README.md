@@ -9,7 +9,7 @@
 - [Authors](#authors)
 
 ## Description
-This project was developed for Design and Development of Secure Software subject @University of Coimbra, Master of Informatics Security <br>
+This project was developed for Design and Development of Secure Software subject @University of Coimbra, Master of Cybersecurity <br>
 Consists in develop a webapplication and some functionalities, each functionality has 2 versions (vulnerable and correct implemented). After the webapplication is tested with some tools in order to find the expected vulnerabilities
 
 #### Main Languages:
