@@ -28,7 +28,7 @@ Consists in develop a webapplication and some functionalities, each functionalit
 ## To run this project:
 You have two ways to run this project:
 1. Download the folder "#spring-boot_folder" and unzip the "Project.zip" after have Docker installed:
-   * Enter in folder docker and run command to generate for the first time a Docker container
+   * Enter in the "docker" folder and run command to generate for the first time a Docker container
    ```shellscript
     [your-disk]:[name-path]\docker> docker-compose up
     ```
@@ -47,12 +47,22 @@ You have two ways to run this project:
     ```shellscript
     [your-disk]:[name-path]> mvnw spring-boot:run
     ```
-    Access the website:
+    * Access the website:
     ![image](https://i.imgur.com/eYKv7tA.png)
 
 ## Notes important to read
 - For more information about the project, end-points and how exploits work read the Report
 - The database will be empty when started, to add books use the SQL script inside the "docker" folder to add some books directly on Docker terminal
+- To generate a website with all the information about the application run the following command:
+  ```shellscript
+  [your-disk]:[name-path]> mvnw site
+  ```
+- If you wanna make some change and regenerate the docker image with the changes run the following command: 
+  ```shellscript
+  [your-disk]:[name-path]> mvnw clean package -DskipTests
+  ```
+  Then go to the "target" folder and copy the file "demo-0.0.1-SNAPSHOT.jar" file to the "docker" folder
 
 ## Authors:
+- [João Silva](https://github.com/joaosilva21)
 - [Inês Marçal](https://github.com/inesmarcal)
