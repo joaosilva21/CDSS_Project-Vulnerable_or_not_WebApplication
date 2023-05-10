@@ -36,7 +36,7 @@ You have two ways to run this project:
      ![image](https://i.imgur.com/TZLhj6I.png)
 
 2. Download the folder "#spring-boot_folder" and unzip the "Project.zip" after have Java and Maven installed:
-   * Create a database with name "ScoreDei"<br>
+   * Create a database with name "Security_or_no"<br>
      ![image](https://i.imgur.com/NAsDm2g.png)
      ![image](https://i.imgur.com/HlNLZM8.png)
    * Configure your connection to the database changing some fields in application.properties file
